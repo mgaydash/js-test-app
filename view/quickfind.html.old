@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery.outside-events.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<title>
+			quickfind
+		</title>
+		<style>
+			
+		</style>
+	</head>
+	<body>
+		<h2 id="header">quickfind</h2>
+		<input id="quickfindInput" style="width:200px;" type="text" />
+		<textarea id="notes" style="width:450px; height:200px; display:block;"></textarea>
+		<button id="conflictButton" type="button">test diag</button>
+		<div id="conflictDiv">is this working??</div>
+	</body>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('body').prepend('<div id="nav" style="border:1px solid black"></div>');
+			jQuery.get(
+				"../view/nav.html", 
+				function(response){
+					jQuery("#nav").html(response);
+				},
+				"html"
+			);	
+			jQuery("#conflictButton").click(function(){
+				jQuery("#conflictDiv").dialog({
+					modal: true
+				});
+			});
+			var fragFormat = [
+				{"addToOutput":false, "header":"NName", "width":"150", "label":"name"},
+				{"addToOutput":false, "header":"TType", "width":"100", "label":"type"},
+				{"addToOutput":false, "header":"SSubtype", "width":"100", "label":"subtype"},
+				//{"addToOutput":false, "header":"DDescription", "width":"200", "label":"description"},
+				{"addToOutput":true, "header":"DDescription", "width":"200", "label":"description"}
+			]
+			jQuery("#quickfindInput").quickfind({
+				displayFragmentUrl: "../view/quickfindDisplayFragment2.jsp",
+				formatObject: fragFormat,
+				outputElement: "#notes",
+				searchUrl: "../file/testSearchResults.json",
+			});
+		});
+		(function($){
+			$.widget("df.quickfind",{
+				options: {
+					createLink: "../test.html",
+					displayFragmentUrl: "",
+					formatObject: {},
+					formTitle: "Dataforma Quickfind",
+					height: 260,
+					outputElement: "",
+					resultLocation: "searchResult",
+					rowHoverColor: "yellow",
+					searchDelay: 500,
+					searchUrl: "",
+					width: 600,
+					zebraStripeColor: "#dddddd",
+					//element class strings
+						//no associated obj
+						_displayFragmentCreateLinkClass: "df_quickfind_default_createLink",
+						_displayFragmentHeaderCellClass: "df_quickfind_default_headerCell",
+						_displayFragmentNumFoundClass: "df_quickfind_default_numFound",
+						_displayFragmentRowCellClass: "df_quickfind_default_rowCell",
+						_displayFragmentTitleClass: "df_quickfind_default_title",
+						//has associated obj
+						_displayFragmentHeaderClass: "df_quickfind_default_header",
+						_displayFragmentRowClass: "df_quickfind_default_row",
+						_displayFragmentTbodyClass: "df_quickfind_default_tbody",
+						_displayFragmentWrapperClass: "df_quickfind_default_wrapper",
+						_resultContainerClass: "df_quickfind_result",
+					//element objects
+					_displayFragmentHeader: {},
+					_displayFragmentRow: {},
+					_displayFragmentTbody: {},
+					_displayFragmentWrapper: {},
+					_resultContainer: {},
+					//vars
+					_addable: "addable",
+					_classPrefix: "df_quickfind_default_dynamic_",
+					_kbSelect: false,
+					_queryString: "",
+					_rowArray: [],
+					_rowIndex: -1,
+					_searchString: ""
+				},
+				_addDialog: function(){
+					var that = this;
+					var options = that.options;
+					options._resultContainer.dialog({
+						autoOpen: false,
+						draggable: false,
+						height: options.height,
+						hide: "fade",
+						modal: false,
+						position: [that.element.position().left, that.element.position().top], //todo
+						resizable: false,
+						show: "fade",
+						width: options.width,
+						zindex: 1005
+					});
+					options._resultContainer.parent().find(".ui-dialog-titlebar").css("display", "none");
+					options._resultContainer.parent().css("border", "none");
+					options._resultContainer.parent().css("background", "none");
+					options._resultContainer.css("padding", "0px");
+				},
+				_addListeners: function(){
+					var that = this;
+					var options = that.options;
+					var timeoutFunc;
+					//add search to target input
+					that.element.keyup(function(e){
+						if(e.keyCode !== 40 && e.keyCode !== 38 && e.keyCode !== 13 && e.keyCode !== 27){
+							clearTimeout(timeoutFunc);
+							timeoutFunc = setTimeout(
+								function(){
+									that._ajaxSearch();
+								},
+								options.searchDelay
+							);
+						}
+					});
+					//add close using jq.outside-events
+					options._resultContainer.bind('clickoutside', function(){
+						that._closeDialog();
+					});
+					//enable arrow key selection
+					$(document).on("keyup", function(e){
+						if(options._rowArray.length > 0){
+							if(e.keyCode === 40 || e.keyCode === 38 || e.keyCode === 13 || e.keyCode === 27){
+								options._kbSelect = true;
+								if(e.keyCode === 40){ //down arrow
+									if(options._rowIndex < options._rowArray.length - 1){
+										options._rowIndex++;
+										options._rowArray[options._rowIndex].css("background", options.rowHoverColor)
+									}
+									if(options._rowIndex > 0 && options._rowIndex < options._rowArray.length){
+										options._rowArray[options._rowIndex - 1].css("background", "");
+									}
+								}
+								if(e.keyCode === 38){ //up arrow
+									if(options._rowIndex > 0){
+										options._rowIndex--;
+										options._rowArray[options._rowIndex].css("background", options.rowHoverColor);
+									}
+									if(options._rowIndex < options._rowArray.length){
+										options._rowArray[options._rowIndex + 1].css("background", "");
+									}
+								}
+								if(e.keyCode === 27){ //escape key
+									that._closeDialog();
+								}
+								if(e.keyCode === 13){ //enter key
+									options._rowArray[options._rowIndex].triggerHandler("click");
+								}
+								//scroll the div when the arrows highlight elements - the constant is the offset before which the animation begins
+								if(options._rowIndex >= 0){
+									options._displayFragmentWrapper.animate({
+										scrollTop: options._rowIndex * (options._displayFragmentWrapper[0].scrollHeight / options._rowArray.length) - 69
+									},
+									0 //animation disabled - too laggy
+									);
+								}
+							}
+						}
+					});
+				},
+				_ajaxSearch: function(){
+					var that = this;
+					var options = that.options;
+					$.ajax({
+						cache: false,
+						data: that._prepareQueryString(),
+						dataType: "json",
+						error: function(response){
+							alert("error"); //make this better 
+						},
+						url: options.searchUrl,
+						success: function(response){
+							that._displayResults(response);
+						}
+					}).done(function(){ 
+						//code that will execute when the call is complete
+					});
+				},
+				_closeDialog: function(){
+					var that = this;
+					var options = that.options;
+					options._resultContainer.dialog("close");
+					options._rowArray = [];
+					options._rowIndex = -1;
+				},
+				_create: function(){
+					var that = this;
+					that._createElements();
+					that._addDialog();
+					that._retrieveDisplayFragment();
+					that._addListeners();
+				},
+				_createElements: function(){
+					var that = this;
+					var options = that.options;
+					//result container
+					that.element.after("<div class='" + options._resultContainerClass + "' style='background:white; border:2px solid #666;'></div>");
+					that.option("_resultContainer", $("." + options._resultContainerClass));
+					//table row style
+					//$('head').append("<style>." + options._displayFragmentRowClass + ":hover{background:" + options.rowHoverColor + "; cursor:pointer;}</style>");
+				},
+				_displayResults: function(response){
+				//uses the cloned fragment row to fill out a table based on the json response
+					var that = this;
+					var options = that.options;
+					that._closeDialog(); //visually refresh if the user enters more text after initial search
+					options._displayFragmentTbody.html("");
+					$("." + options._displayFragmentNumFoundClass).html(response[options.resultLocation].length);
+					for(var i = 0; i < response[options.resultLocation].length; i++){  //row loop
+						var jsonData = response.searchResult[i];
+						var newRow = options._displayFragmentRow.clone(true);
+						for(key in jsonData){ //column loop								//column loop
+							var thisCol = newRow.find("." + options._classPrefix + key);
+							thisCol.html(jsonData[key]);
+							thisCol.attr("title", jsonData[key]);
+						}
+						if(i % 2 != 0){
+							newRow.attr("bgcolor", options.zebraStripeColor); //not using css so we can keep the highlight on hover
+						}
+						options._rowArray.push(newRow);
+						//add event listener to the new row - this needs to be done here, or the binding will be lost in the append
+						options._displayFragmentTbody.append(
+							newRow
+							.click(function(){ 
+								$(options.outputElement).val($(options.outputElement).val() + $(this).find("." + options._classPrefix + options._addable).html() + "\n");
+								that._closeDialog();
+								that.element.val("");
+								that.element.focus();
+							})
+							.mouseover(function(){
+								$(document).mousemove(function(){
+									options._kbSelect = false;
+								});
+								if(!options._kbSelect){
+									for(var i = 0; i < options._rowArray.length; i++){
+										options._rowArray[i].css("background", "");
+									}
+									$(this).css("background", options.rowHoverColor);
+									$(this).css("cursor", "pointer");
+									options._rowIndex = this.rowIndex;
+								}
+							})
+						);
+					}
+					options._resultContainer.dialog("open");
+					//using the jq ui position plugin to positon the dialog window appropriately near the target element
+					options._resultContainer.parent().position({
+						my: "left top",
+						at: "left bottom",
+						of: that.element
+					});
+					that.element.focus();
+				},
+				_prepareForm: function(){
+				//the form is prepared to accept the json search response by formatting the response table based on the passed formatting object
+					var that = this;
+					var options = that.options;
+					var form = options._resultContainer;
+					var format = options.formatObject;
+					var headerCell = form.find("." + options._displayFragmentHeaderCellClass);
+					var rowCell = form.find("." + options._displayFragmentRowCellClass);
+					that.option("_displayFragmentHeader", form.find("." + options._displayFragmentHeaderClass));
+					that.option("_displayFragmentRow", form.find("." + options._displayFragmentRowClass));
+					that.option("_displayFragmentTbody", form.find("." + options._displayFragmentTbodyClass));
+					that.option("_displayFragmentWrapper", form.find("." + options._displayFragmentWrapperClass));
+					
+					$("." + options._displayFragmentCreateLinkClass).attr("href", options.createLink);
+					$("." + options._displayFragmentTitleClass).html(options.formTitle);
+					//set height for wrapper div based on the height of the dialog and attach a handler for scrolling to the bottom
+					options._displayFragmentWrapper.css("height", options.height - 57);
+					options._displayFragmentWrapper.scroll(function(){
+						if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight){
+							console.log("bottom");
+						}
+					});
+					options._displayFragmentHeader.html("");
+					options._displayFragmentRow.html("");
+					options._displayFragmentTbody.html("");
+					//create headers and row cells according the formatting object 
+					for(var i = 0; i < format.length; i++){
+						var row = format[i];
+						var thisHeader = headerCell.clone();
+						var thisCell = rowCell.clone();
+						
+						thisHeader.css("width", row.width + "px");
+						thisHeader.text(row.header);
+						options._displayFragmentHeader.append(thisHeader);
+						
+						thisCell.css("width", row.width + "px");
+						thisCell.addClass(options._classPrefix + row.label);
+						if(row.addToOutput == true){
+							thisCell.addClass(options._classPrefix + options._addable);
+						}
+						options._displayFragmentRow.append(thisCell);
+					}
+				},
+				_prepareQueryString: function(){
+					var queryString = "";
+					//queryString += df.ajax.appPath + "/pages/gantt/RetrieveDurationInfo.action?id=" + that.target.val());
+					return queryString;
+				},
+				_retrieveDisplayFragment: function(){
+				//get the html display template
+					var that = this;
+					var options = that.options;
+					$.get(
+						options.displayFragmentUrl,
+						function(response){
+							$(options._resultContainer).html(response);
+							that._prepareForm();
+							//that.option("_displayFragmentRow", $(options._resultContainer).find("." + options._displayFragmentRowClass).clone());
+						},
+						"html"
+					);
+				}
+			});
+		})(jQuery);
+	</script>
+</html>

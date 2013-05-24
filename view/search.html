@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			search 
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+				jQuery("#textSearch").textSearch({
+					outputId: "#notes"
+				});			
+				jQuery("body").canvas();
+//				console.log(jQuery("#test").attr("batman"));
+			});
+			(function($){
+				var tableStr = jQuery("<table border='1' cellspacing='0'><tr> <td>hey</td> <td>there</td> <td>table</td> </tr></table>");
+				var tempResultAr = ["ActionScript","AppleScript","Asp","BASIC","C","C++","Clojure","COBOL","ColdFusion","Erlang","Fortran","Groovy","Haskell","Java","JavaScript","Lisp","Perl","PHP","Python","Ruby","Scala","Scheme"];
+				$.widget("df.textSearch",{
+					options: {
+						outputId: ""
+					},
+					refresh: function(){
+
+					},
+					_create: function(){
+						var that = this;
+						var options = that.options;
+						that._format();
+						that.element.autocomplete({
+							minLength: 1,
+							open: function(){
+								//jQuery(".ui-menu").append(tableStr);
+							},
+							select: function(event, ui){
+								jQuery(options.outputId).prepend(ui.item.value + "\n");
+								that.element.val("");
+								return false;
+							},
+							source: tempResultAr
+						});
+					},
+					_format: function(){
+						jQuery("head").append('<style>.ui-menu{border:2px solid #bbb;font-size:14px;height:200px;overflow:auto;width:400px;}</style>');
+					},
+					_init: function(){
+
+					},
+					_prepare: function(){
+
+					},
+					_update: function(){
+
+					}
+				});
+			})(jQuery);
+			(function($){
+				$.widget("test.canvas",{
+					options: {
+						//element objects
+						_canvas: undefined,
+						//element selectors
+						_canvasId: "can",
+						_pickerSel: ".picker",
+						//misc
+						_canDraw: false,
+						_color: "black",
+						_context2d: undefined
+					},
+					_addDrawingHandlers: function(){
+						var that = this;
+						var options = that.options;
+						var can = options._canvas;
+						var con = options._context2d;
+						can.mousedown(function(){
+							options._canDraw = true;
+							con.strokeStyle = options._color;
+							con.lineWidth = 4.0;
+							con.beginPath();
+//							that._draw(e);
+						});
+						can.mousemove(function(e){
+							if(options._canDraw)
+//								that._draw(e);
+								that._draw2(e);
+						});
+						can.mouseleave(function(){
+//							options._canDraw = false;
+						});
+						$(window).mouseup(function(){
+							options._canDraw = false;
+						});
+					},
+					_addPickerHandlers: function(){
+						var that = this;
+						var options = that.options;
+						$(options._pickerSel).find("div").click(function(){
+							options._color = $(this).css("background-color");
+							$(options._pickerSel).find("div").css("width", "20px");
+							$(this).css("width", "26px");
+						});
+					},
+					_clickTest: function(){
+						var that = this;
+						var options = that.options;
+						var con = options._context2d;
+						var e = new jQuery.Event("mousedown");
+						con.fillStyle="#0000ff";
+						e.pageX = 550;
+						e.pageY = 120;
+						options._canvas.trigger(e);
+						con.fillStyle="#00ff00";
+						e.pageX = 600;
+						e.pageY = 140;
+						options._canvas.trigger(e);
+						con.fillStyle="#ff0000";
+						e.pageX = 650;
+						e.pageY = 160;
+						options._canvas.trigger(e)
+						options._canvas.trigger(new $.Event("mouseup"));
+					},
+					_create: function(){
+						var that = this;
+						var options = that.options;
+						that._getContext();
+//						that._drawRect();
+						that._addDrawingHandlers();
+						that._addPickerHandlers();
+//						that._clickTest();
+//						that._drawGrid();
+					},
+					_draw: function(e){
+						var that = this;
+						var options = that.options;
+						var can = options._canvas;
+						var con = options._context2d;
+						var x = e.pageX - parseInt(can.offset().left);
+						var y = e.pageY - parseInt(can.offset().top);
+						con.fillStyle = options._color;
+						con.fillRect(x, y, 5, 5);
+					},
+					_draw2: function(e){
+						var that = this;
+						var options = that.options;
+						var can = options._canvas;
+						var con = options._context2d;
+						var x = e.pageX - parseInt(can.offset().left);
+						var y = e.pageY - parseInt(can.offset().top);
+//						con.strokeStyle = "rgb(" + Math.floor(Math.random() * 257) + ", "+ Math.floor(Math.random() * 257) + ", "+ Math.floor(Math.random() * 257) + ")";
+						con.lineTo(x, y);
+						con.stroke();
+					},
+					_drawGrid: function(){
+						var that = this;
+						var options = that.options;
+						var can = options._canvas;
+						var con = options._context2d;
+						for(var i = 10; i < can.width(); i += 10){
+							con.moveTo(i, 0);
+							con.lineTo(i, can.height());
+						}
+						for(var i = 10; i < can.height(); i += 10){
+							con.moveTo(0, i);
+							con.lineTo(can.width(), i);
+						}
+						con.stroke();
+					},
+					_drawRect: function(){
+						var that = this;
+						var options = that.options;
+						var con = options._context2d;
+						con.fillStyle="#FF0000";
+						con.fillRect(0,0,150,75);
+						con.fillStyle="#00ff00";
+						con.fillRect(150,75,10,10);
+					},
+					_getContext: function(){
+						var that = this;
+						var options = that.options;
+						options._canvas = document.getElementById(options._canvasId);
+						options._context2d = options._canvas.getContext("2d");
+						options._canvas = $(options._canvas);
+					}
+				});
+			})(jQuery);	
+		</script>
+		<style>
+			
+		</style>
+	</head>
+	<body>
+		<div style="float:left;">
+			<h2 id="header">search</h2>
+			<input id="textSearch" style="width:200px;" type="text" />
+			<textarea id="notes" style="width:450px; height:200px; display:block;"></textarea>
+			<div style="background:#aaaaaa; height:50px;">########## ^^^^^^ Old Stuff ^^^^^^ ##########</div>
+		</div>
+		<div style="float:left;">
+			<div style="background:#ffffff; height:50px;"></div>
+			<div style="background:#aaaaaa; height:50px;">########## vvvvvv New Stuff vvvvvv ##########</div>
+			<canvas id="can" height="650" width="800" style="border:1px solid black; float:left;"></canvas>
+			<div style="float:left; height:200px; width:5px;"></div>
+			<div class="picker" style="border:1px solid black; float:left; height:200px; width:26px;">
+				<div style="background:black; height:20px; width:26px;"></div>
+				<div style="background:white; border-bottom:1px solid black; border-right:1px solid black; border-top:1px solid black; height:18px; margin-top:2px; width:20px;"></div>
+				<div style="background:red; height:20px;  margin-top:2px; width:20px;"></div>
+				<div style="background:orange; height:20px; margin-top:2px; width:20px;"></div>
+				<div style="background:yellow; height:20px; margin-top:2px; width:20px;"></div>
+				<div style="background:green; height:20px; margin-top:2px; width:20px;"></div>
+				<div style="background:blue; height:20px; margin-top:2px; width:20px;"></div>
+				<div style="background:purple; height:20px; margin-top:2px; width:20px;"></div>
+				<div style="background:violet; height:20px; margin-top:2px; width:20px;"></div>
+			</div>
+		</div>
+		<!--<div id="test" batman="Batman">djdjddj</div>-->
+	</body>
+</html>

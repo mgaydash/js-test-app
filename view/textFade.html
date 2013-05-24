@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			gradient
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+
+				var temp = jQuery(".grad").first().detach();
+				for(var i = 0; i < 255; i++){
+					var greyRgb = i;
+					temp.css("background", "rgb(" + greyRgb + "," + greyRgb + "," + greyRgb + ")");
+					jQuery(".gradHold").append(temp.clone());
+				}
+				for(var i = 255; i > 0; i--){
+					var greyRgb = i;
+					temp.css("background", "rgb(" + greyRgb + "," + greyRgb + "," + greyRgb + ")");
+					jQuery(".gradHold").append(temp.clone());
+				}
+				jQuery(".gradHold").append("<div style='clear:both'></div>");
+				for(var i = 0; i < 255; i++){
+					var greyRgb = i;
+					temp.css("background", "rgb(" + greyRgb + "," + 0 + "," + 255 + ")");
+					jQuery(".gradHold").append(temp.clone());
+				}
+				for(var i = 255; i > 0; i--){
+					var greyRgb = i;
+					temp.css("background", "rgb(" + greyRgb + "," + 0 + "," + 255 + ")");
+					jQuery(".gradHold").append(temp.clone());
+				}
+				jQuery(".gradHold").append("<div style='clear:both'></div>");
+				for(var i = 510; i > 0; i--){
+					if(i >= 255)
+						var greyRgb = 255;
+					else
+						var greyRgb = i;
+					temp.css("background", "rgb(" + greyRgb + "," + greyRgb + "," + greyRgb + ")");
+					jQuery(".gradHold").append(temp.clone());
+				}
+				
+				jQuery(".btn1").click(function(){
+					alert("btn1");
+				});
+				jQuery(".btn2").click(function(){
+					alert("btn2");
+				});
+			});
+			
+			/*for(var i = 0; i < 999999999; i++){
+				for(var j = 0; j < 999999999; j++)
+					console.log("hey")
+			}*/
+		</script>
+	</head>
+	<body>
+		<h2 id="header">gradient</h2>
+		<table border=1 cellpadding=0 cellspacing=0 style="background:#cfcfcf;">
+			<thead>
+				<th>one</th>
+				<th>two</th>
+				<th>three</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td><div style="height:50px; width:100px;">hey there delila</div></td>
+					<td>what's it like in</td>
+					<td>new york city?</td>
+				</tr>
+				<tr>
+					<td>you're a</td>
+					<td>miles away, but tonight</td>
+					<td>you look so pretty</td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="gradHold">
+			<div class="grad" style="float:left; height:100px; width:1px;"></div>
+		</div>
+		<div style='clear:both'></div>
+		<div class="btn1" style="background:red; height:20px; margin-top:10px; width:20px;">1</div>
+		<div class="btn2" style="background:red; height:20px; margin-top:10px; width:20px;">2</div>
+		<div class="btn3" style="background:red; height:20px; margin-top:10px; width:20px;">3</div>
+	</body>
+</html>

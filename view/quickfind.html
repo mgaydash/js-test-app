@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery.outside-events.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.dfQuickfind.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			quickfind
+		</title>
+		<style>
+			
+		</style>
+			<script type="text/javascript">
+				jQuery(document).ready(function(){
+					jQuery('body').prepend('<div id="nav"></div>');
+					jQuery.get(
+						"../view/nav.html", 
+						function(response){
+							jQuery("#nav").html(response);
+						},
+						"html"
+					);	
+					jQuery("#conflictButton").click(function(){
+						jQuery("#conflictDiv").dialog({
+							modal: true
+						});
+					});
+					var fragFormat = [
+						{"addToOutput":false, "header":"NName", "width":"150", "label":"name"},
+						{"addToOutput":false, "header":"TType", "width":"100", "label":"type"},
+						{"addToOutput":false, "header":"SSubtype", "width":"100", "label":"subtype"},
+						{"addToOutput":true, "header":"DDescription", "width":"200", "label":"description"}
+					];
+					jQuery("#quickfindInput").quickfind({
+						displayFragmentUrl: "../view/quickfindDisplayFragment2.jsp",
+						formatObject: fragFormat,
+						outputElementId: "notes",
+						searchUrl: "../file/testSearchResults.json"
+					});
+					jQuery("#quickfindInput").focus();
+
+					//########## text code beloow ##########
+					jQuery(".addToInput").click(function(){
+						insertAtCaret("#targetInput", "#######");
+					});
+					jQuery("#targetInput").click(function(e){
+						jQuery("#hold").html(e.target.selectionStart);
+					});
+					jQuery("#targetInput").keyup(function(e){
+						jQuery("#hold").html(e.target.selectionStart);
+					});
+				});
+				function insertAtCaret(areaSel, text){
+					var back;
+					var front;
+					var strPos;
+					var t;
+					t = jQuery(areaSel);
+
+					strPos = jQuery("#hold").html();
+
+					front = (t.val()).substring(0, strPos);
+					back = (t.val()).substring(strPos, t.val().length); 
+					t.val(front + text + back);
+				}
+			</script>
+	</head>
+	<body>
+		<h2 id="header">quickfind</h2>
+		<input id="quickfindInput" style="width:200px;" type="text" />
+		<textarea id="notes" style="width:450px; height:100px; display:block;"></textarea>
+		<button id="conflictButton" type="button">test diag</button>
+		<div id="conflictDiv">is this working??</div>
+		<div style="background:gray; height:50px; width:600px;">space</div>
+		<textarea id="targetInput" style="height:150px; width:500px;" type="text"></textarea>
+		<button class="addToInput" style="" type="button">click</button>
+		<div id="hold">0</div>
+		<div style="background-color:red; height:10px; width:900px;"></div>
+		<table>
+			<tr>
+				<td>
+					<select></select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" />
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

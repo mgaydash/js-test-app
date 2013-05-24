@@ -1,0 +1,42 @@
+/* ########## classes ########## */
+.cell{ 
+	-moz-user-select: none; 
+	-khtml-user-select: none; 
+	-webkit-user-select: none; 
+	-o-user-select: none; 
+}
+.lb{
+	width:300px;
+}
+.lt{
+	width:300px;
+}
+.mt{
+	/*padding:5px;*/
+}
+.rb{
+	width:600px;
+}
+.rt{
+	width:600px;
+}
+.navBtn{
+	background:#bbbbbb;
+	border:1px solid black;
+	color:black;
+	display:inline-block;
+	height:25px;
+	padding:5px 0px 0px 0px;
+	text-align:center;
+	width:80px;
+}
+.navBtn:hover{
+	background:#a0a0a0;
+}
+
+/* ########## elements ########## */
+a{
+	text-decoration:none;
+}
+
+/* ########## id's ########## */

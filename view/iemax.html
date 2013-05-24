@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			iemax
+		</title>
+			<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+				jQuery("body").movable();
+				
+//				jQuery("body").append('<div class="canvasMe" style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">This will be in a canvas later</div>');
+				
+				jQuery(".canvasMe").each(function(i){
+					var can = jQuery("#rotateCanvas2").clone();
+					var text = jQuery(this).text();
+					can.attr("id", can.attr("id") + "_" + i);
+					var con = can[0].getContext("2d"); 
+					
+					con.textAlign = "center";
+					con.font = "16px sans-serif";
+					con.translate(can[0].width / 2, can[0].height / 2);
+					con.rotate(Math.PI / 2);
+					con.fillText(text, 0, 6);
+					
+					jQuery(this).html(can);
+				});
+				
+				//cnetering rotated text horizontally
+				jQuery(".paddingTest").css("margin-top", function(){
+					jQuery(this).css("display", "inline-block");
+					var width = jQuery(this).width();
+					jQuery(this).css("display", "");
+					return (jQuery(this).parent().height() / 2) - (width / 2) + "px"; 
+				});
+			});
+			(function($){
+				$.widget("test.movable",{
+					options: {
+						_isClicked: false,
+						_templateMovable: undefined,
+						_current: undefined,
+						//element selectors
+						_addButtonSel: "#plus",
+						_movableSel: ".movable",
+						_removeButtonSel: "#minus"
+					},
+					_addEventHandlers: function(){
+						var that = this;
+						var options = that.options;
+						options._templateMovable.mousedown(function(e){
+							that.option("_current", $(e.target));
+							that.option("_isClicked", true);
+						});
+						$(window).mouseup(function(e){
+							that.option("_isClicked", false)
+						});
+						$(window).mousemove(function(e){
+							if(options._isClicked){
+								//$(options._movableSel).css("z-index", 1);
+								//options._current.css("z-index", 2);
+								options._current.css("left", e.pageX - options._current.width() / 2);
+								options._current.css("top", e.pageY - options._current.height() / 2);
+							}
+						});
+						$(options._addButtonSel).click(function(){
+							that._spawnMovable();
+						});
+						$(options._removeButtonSel).click(function(){
+							that._removeMovable();
+						});
+					},
+					_create: function(){
+						var that = this;
+						var options = that.options;
+						that._makeMovableFromTemplate();
+						that._addEventHandlers();
+					},
+					_makeMovableFromTemplate: function(){
+						var that = this;
+						var options = that.options;
+						that.option("_templateMovable", jQuery(options._movableSel).detach());
+					},
+					_removeMovable: function(){
+						var that = this;
+						var options = that.options;
+						$(options._movableSel).first().remove();
+					},
+					_spawnMovable: function(){
+						var that = this;
+						var options = that.options;
+						$("body").append(options._templateMovable.clone(true));
+					}
+				});
+			})(jQuery);
+		</script>
+		<style>
+			#moveTest{ 
+				-moz-user-select: none; 
+				-khtml-user-select: none; 
+				-webkit-user-select: none; 
+				-o-user-select: none; 
+			}
+			.textRotate{
+				transform:rotate(90deg);
+				-ms-transform:rotate(90deg); /* IE 9 */
+				-moz-transform:rotate(90deg); /* Firefox */
+				-webkit-transform:rotate(90deg); /* Safari and Chrome */
+				-o-transform:rotate(90deg); /* Opera */
+			}
+		</style>
+	</head>
+	<body>
+		<h2 id="header">iemax</h2>
+		<div style="border:2px solid black; float:left; width:700px;">
+			<div style="background:red; width:100px"> 
+				100px
+			</div>
+			<div style="background:orange; width:200px"> 
+				200px
+			</div>
+			<div style="background:yellow; width:300px"> 
+				300px
+			</div>
+			<div style="background:green; width:400px"> 
+				400px
+			</div><div style="background:blue; width:500px"> 
+				500px
+			</div><div style="background:purple; width:600px"> 
+				600px
+			</div>
+			<div style="background:white;"> 
+				space
+			</div>
+			<div id="widthTest" style="background:white; border:1px solid black; width:100px"> 
+				100px
+			</div>
+			<div class="movable" style="background:gray; border:1px solid black; height:100px; left:400px; position:absolute; top:400px; width:100px"> 
+				move me
+			</div>
+			<div id="plus" style="background:#cccccc; border:1px solid black; height:22px; margin-top:3px; padding:3px 0px 0px 8px; width:17px;">+</div>
+			<div id="minus" style="background:#cccccc; border:1px solid black; height:23px; margin-top:3px; padding:2px 0px 0px 10px; width:15px;">-</div>
+
+			<div style="background:#eeeeee; height:20px; width:400px;">space</div>
+
+			<!--v v v v div container with a div that is rotated within v v v v-->
+			<div style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<div class="textRotate" style="overflow:visible; padding:0px 0px 0px 20px; white-space:nowrap;">This text is rotated 90 deg</div>
+			</div>
+			<div style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<div class="textRotate" style="overflow:visible; padding:0px 0px 0px 20px; white-space:nowrap;">Short Text</div>
+			</div>
+			<div style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<div class="textRotate" style="overflow:visible; padding:0px 0px 0px 20px; white-space:nowrap;">Loooooooooooooooooooooooooooog Text</div>
+			</div>
+			<div style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<div class="textRotate" style="background:red; overflow:visible; padding:0px 0px 0px 20px; white-space:nowrap;">This text is rotated 90 deg</div>
+			</div>
+
+			<!--v v v v centering test v v v v-->
+			<div style="border:1px solid black; float:left; height:100px; margin:0px 0px 0px 5px; width:20px;">
+				<div class="textRotate paddingTest" id="paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+			</div>
+			<div style="border:1px solid black; float:left; height:200px; margin:0px 0px 0px 5px; width:20px;">
+				<div class="textRotate paddingTest" id="paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+			</div>
+			<div style="border:1px solid black; float:left; height:400px; margin:0px 0px 0px 5px; width:20px;">
+				<div class="textRotate paddingTest" id="paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+			</div>
+
+			<!--^ ^ ^ ^ centering test ^ ^ ^ ^-->
+			<!--^ ^ ^ ^ div container with a div that is rotated within ^ ^ ^ ^-->
+
+			<div style="border:2px solid red; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<div class="textRotate" style="overflow:visible; padding:0px 0px 0px 20px; white-space:nowrap;">v v Rotated Divs ## Rotated Canvas Ctx ^ ^</div>
+			</div>
+
+			<!--v v v v div contentes will be replaced with a canvas with a rotated context v v v v-->
+			<div class="" style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">This will be in a canvas later</div>
+			<div class="canvasMe" style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">This will be in a canvas later</div>
+			<div class="canvasMe" style="border:1px solid black; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">test test stestswt sts</div>
+			<!--^ ^ ^ ^ div contentes will be replaced with a canvas with a rotated context ^ ^ ^ ^-->
+
+			<!--v v v v canvas template and label v v v v-->
+			<div style="border:2px solid blue; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<canvas id="rotateCanvas2" height="300" style="border:0px solid black; display:block; margin:0px 0px 0px 0px;" width="40"></canvas>
+			</div>
+			<div style="border:2px solid red; float:left; height:300px; margin:0px 0px 0px 5px; width:40px;">
+				<div class="textRotate" style="overflow:visible; padding:0px 0px 0px 20px; white-space:nowrap;">v v v canvas template v v v</div>
+			</div>
+			<!--^ ^ ^ ^ canvas template and label ^ ^ ^ ^-->
+
+			<div id="measure" style="clear:both; display:inline-block;">This is some text!!</div>
+			<div style="clear:both;">clear both</div>
+		</div>
+		
+		<div style="border:2px solid black; float:left; width:650px;">
+			<div style="float:left;">
+				<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+					<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+				</div>
+				<div style="border:1px solid black; height:200px; margin:0px 0px 0px 5px; width:20px;">
+					<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+				</div>
+				<div style="border:1px solid black; height:400px; margin:0px 0px 0px 5px; width:20px;">
+					<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+				</div>
+			</div>
+			<div style="float:left; margin-left:10px;">
+				<table border="1" cellspacing="0">
+					<tr>
+						<td style="overflow:auto;">
+							<div style="border:1px solid black; border-left:none; border-top:none; padding-top:1px; width:19px; height:158px;  background-color: rgb(204, 204, 255);">
+								<div class="textRotate paddingTest" style="white-space: nowrap;">Sep</div>
+							</div>
+							<div style="border:1px solid black; height:400px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">phase name n shit</div>
+							</div>
+							<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+							</div>
+							<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+							</div>
+						</td>
+						<td>
+							<div style="border:1px solid black; height:400px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">phase name n shit</div>
+							</div>
+							<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+							</div>
+							<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+							</div>
+						</td>
+						<td>
+							<div style="border:1px solid black; height:400px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">phase name n shit</div>
+							</div>
+							<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+							</div>
+							<div style="border:1px solid black; height:100px; margin:0px 0px 0px 5px; width:20px;">
+								<div class="textRotate paddingTest" style="overflow:visible; white-space:nowrap;">09/25/2012</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div style="clear:both;"></div>
+			<div style="border:1px solid black; display:inline-block;">&nbsp;</div>
+		</div>
+	</body>
+</html>

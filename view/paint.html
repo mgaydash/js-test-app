@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			paint 
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);		
+				var cell = jQuery(".cell");
+				var col = jQuery(".col");
+				var canDraw = false;
+				var bgcolor = "red";
+				jQuery(window).mousedown(function(){
+					canDraw = true;
+				});jQuery(window).mouseup(function(){
+					canDraw = false;
+				});
+				jQuery(".pick").click(function(e){
+					bgcolor = jQuery(e.target).css("background-color");
+				});
+				cell.mouseover(function(e){
+					if(canDraw)
+						jQuery(e.target).css("background", bgcolor);
+				});
+				cell.click(function(e){
+					jQuery(e.target).css("background", bgcolor);
+				});
+				for(var i = 0; i < 50; i++){
+					col.append(cell.clone(true).css("display", "block"));
+				}
+				for(var i = 0; i < 50; i++){
+					jQuery("body").append(col.clone(true));
+				}
+			});
+		</script>
+		<style>
+			.cell{ 
+				-moz-user-select: none; 
+				-khtml-user-select: none; 
+				-webkit-user-select: none; 
+				-o-user-select: none; 
+			}
+			li{
+				display:block;
+				float:left;
+			}
+		</style>
+	</head>
+	<body>
+		<h2 id="header">paint</h2>
+		<ul>
+			<li>hey</li>
+			<li>there</li>
+			<li>hey</li>
+			<li>hey</li>
+			<li>banana</li>
+		</ul>
+		<div style="clear:both"></div>
+		<div class="pick" style="background:yellow; float:left; height:20px; width:20px;"></div>
+		<div class="pick" style="background:red; float:left; height:20px; width:20px;"></div>
+		<div class="pick" style="background:green; float:left; height:20px; width:20px;"></div>
+		<div class="pick" style="background:purple; float:left; height:20px; width:20px;"></div>
+		<div class="pick" style="background:black; float:left; height:20px; width:20px;"></div>
+		<div style="clear:both"></div>
+		<div class="cell" style="background:yellow; display:none; height:10px; width:10px;"></div>
+		<div class="col" style="float:left"></div>
+	</body>
+</html>

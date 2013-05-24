@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<!-- <link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" /> -->
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			pi
+		</title>
+		<script>
+		jQuery(document).ready(function(){
+			jQuery('body').prepend('<div id="nav"></div>');
+			jQuery.get(
+				"../view/nav.html", 
+				function(response){
+					jQuery("#nav").html(response);
+				},
+				"html"
+			);
+			
+			var num = 0;
+			for(var i = 3, j = 0; i < 3000000; i = i + 2, j++){
+				if((j % 2) == 0)
+					num += (1/i);
+				else
+					num -= (1/i);
+			}
+			jQuery("#output").html(4 * (1 - num));
+			jQuery("#rotate").css({
+					"transform":"rotate(90deg)",
+					"-o-transform":"rotate(90deg)",
+					"-webkit-transform":"rotate(90deg)",
+					"-ms-transform":"rotate(90deg)",
+					"-moz-transform":"rotate(90deg)"
+				});
+		});
+		</script>
+		<style>
+			.cell{ 
+				-moz-user-select: none; 
+				-khtml-user-select: none; 
+				-webkit-user-select: none; 
+				-o-user-select: none; 
+			}
+			/*body{
+				-moz-transform-origin:top left;
+				transform:rotate(90deg);
+				-ms-transform:rotate(90deg);
+				-moz-transform:rotate(90deg);
+				-webkit-transform:rotate(90deg);
+				-o-transform:rotate(90deg);
+			}*/
+			@media print{
+				.break{
+					page-break-after:always
+				}
+			}
+			/*@media print{.break{page-break-after:always}}*/
+		</style>
+	</head>
+	<body>
+		<h2 id="header">pi</h2>
+		<div id="output">
+			output
+		</div>
+		<table border=1>
+			<thead>
+				<tr>
+					<td colspan=3 style="text-align:center;">Workweek Form</td>
+				</tr>
+				<tr>
+					<th style="width:100px;">one</th>
+					<th style="width:100px;">two</th>
+					<th style="width:100px;">three</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>hty</td>
+					<td>hty</td>
+					<td>hty</td>
+				</tr>
+				<tr>
+					<td>hty</td>
+					<td>hty</td>
+					<td>hty</td>
+				</tr>
+				<tr>
+					<td>hty</td>
+					<td>hty</td>
+					<td>hty</td>
+				</tr>
+			</tbody>
+			<tfoot>
+			</tfoot>
+		</table>
+		<table>
+			<thead>
+				<tr>
+					<th style="border-bottom: 1px solid #000000;" colspan="4">Edit Work Week</th>
+				</tr>
+				<tr style="background-color:#c0c0c0;">
+					<th style="width:100px;">Day</th>
+					<th style="">Hours</th>	
+					<th style="">Notes</th>               
+					<th style="width: 80px;">Include</th>
+				</tr>
+			</thead>
+			<tbody class="df_workweek_default_dayTbody">					
+				<tr class="df_workweek_default_dayRow" style="background:#dddddd;">
+					<th class="df_workweek_default_dayName" style="text-align:center;">
+						Wednesday
+					</th>					  		
+					<td>
+						<input class="df_workweek_default_dayHours" style="width:80px;" type="text">
+					</td>						  							
+					<td>
+						<textarea class="df_workweek_default_dayNote" style="height:30px; resize:none; width:300px;"></textarea>								
+					</td>				  		
+					<td>
+						<div style="margin-left:auto; margin-right:auto;width:70px;"><button class="df_workweek_default_dayButton" type="button" style="width:70px;">Add</button></div>
+					</td>
+				</tr>			
+			</tbody>	
+			<tfoot>
+				<tr>
+					<td colspan="4">
+						<button class="df_baseForm_default_submitButton" type="button">Submit</button>
+						<button class="df_baseForm_default_cancelButton" type="button">Cancel</button>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		<div style="background:blue; height:100px; width:300px;"></div>
+		<div style="background:yellow; height:100px; width:300px;"></div>
+		<div id="rotate" style="background:red; height:100px; width:300px;"></div>
+		<div class="break" style="background:green; height:100px; width:300px;"></div>
+		<div class="break" style="background:green; height:100px; width:300px;"></div>
+		<div class="break" style="background:green; height:100px; width:300px;"></div>
+		<div class="break" style="background:green; height:100px; width:300px;"></div>
+		<div class="break" style="background:green; height:100px; width:300px;"></div>
+		<div class="break" style="background:green; height:100px; width:300px;"></div>
+	</body>
+</html>

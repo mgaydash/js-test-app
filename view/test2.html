@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			test2
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+				jQuery("#testButton").click(function(){
+					jQuery("#test").tester({
+						message:"hahahahaha"
+					});
+				});
+				jQuery("#testButton2").click(function(){
+					jQuery("#test2").dialog();
+				});
+			});
+			function benAppleby(){
+				jQuery(".switchTable").each(function(){
+					var ele = jQuery(this);
+					var height = ele.height();
+					var width = ele.width();
+					ele.width(height);
+					ele.height(width);
+				});
+			}
+			(function($){
+				$.widget("df.tester",{
+					options: {
+						message: "default",
+						selector: ""
+					},
+					_create: function(){
+						var local = this;
+						/*var gui = local.element;
+						gui.bind("click",function(){
+							alert("hi");
+						});*/
+						var that = this;
+						$.get("../view/durationForm.jsp", function(response){
+							that.element.html(jQuery(response));
+							that.element.dialog({
+								autoOpen:false,
+								draggable:false,
+								height:190,
+								modal:true,
+								resizable:false,
+								width:400
+							}).done(function(){
+								that._prepare();
+								that.element.dialog("open");
+							});
+						});
+					},
+					_init: function(){
+						this.element.dialog("open");
+					},
+					_prepare: function(){
+						var that = this;
+						//var options = that.options;
+						that.element.find(".durationFormClose").click(function(){
+							if(confirm("Do you want to close the form?"))
+								that.element.dialog('close');
+						});
+						that.element.find(".durationFormSubmit").click(function(){
+							if(confirm("Do you want to submit this information?"))
+								alert(that.element.find(".changeDuration").val());
+								that.element.dialog('close');
+						});
+						that.element.parent().find(".ui-dialog-titlebar").css("display", "none");
+						that.element.css("padding", "0px");
+					},
+					_update: function(){
+
+					},
+					refresh: function(){
+
+					}
+				});
+			})(jQuery);
+		</script>
+		<style>
+			table{
+				border: 1px solid red;
+				padding: 5px;
+			}
+			td{
+				border: 1px solid blue;
+				padding: 5px;
+			}	
+		</style>
+	</head>
+	<body>
+		<div id="test">test</div>
+		<h2 id="test2">test2</h2>
+		<button id="testButton" type="button">test</button>
+		<button id="testButton3" type="button" onclick="benAppleby();">ben appleby</button>
+		<button id="testButton2" type="button">test334</button>
+		<table class="switchTable">
+			<tbody  class="switchTable">
+				<tr  class="switchTable" style="border:1px solid black;width:200px;height:50px;"><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">1</td><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">1</td></tr>
+				<tr  class="switchTable" style="border:1px solid black;width:200px;height:50px;"><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">2</td><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">2</td></tr>
+				<tr  class="switchTable" style="border:1px solid black;width:200px;height:50px;"><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">3</td><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">3</td></tr>
+				<tr  class="switchTable" style="border:1px solid black;width:200px;height:50px;"><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">4</td><td class="switchTable" style="border:1px solid black;width:100px;height:50px;">4</td></tr>
+			</tbody>
+		</table>
+		<div>space</div>
+		<table border="1" class="mt">
+			<tr style="height:100px;">
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+				<td width="100"></td>
+			</tr>
+		</table>
+		<div>space</div>
+		<table border="1" class="mt">
+			<tr>
+				<td>
+					<table class="lt">
+						<tr>
+							<td>
+								lt test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								lt test
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table class="rt">
+						<tr>
+							<td colspan="0">
+								rt test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								rt test
+							</td> 
+							<td>
+								rt test
+							</td>
+							<td>
+								rt test
+							</td>
+							<td>
+								rt test
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table class="lb">
+						<tr>
+							<td>
+								lb test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								lb test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								lb test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								lb test
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table class="rb">
+						<tr>
+							<td>
+								rb test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								rb test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								rb test
+							</td>
+						</tr>
+						<tr>
+							<td>
+								rb test
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

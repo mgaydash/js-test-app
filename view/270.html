@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			270
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+				
+				jQuery("body").fibonacci();
+				jQuery("body").fizzbuzz();
+				jQuery(".fib").click(function(){
+					var num = prompt("Please enter a number.");
+					if (num != null && num != ""){
+						jQuery("body").fibonacci("printFib", num);
+					}
+				});
+				jQuery(".fizz").click(function(){
+					var num = prompt("Please enter a number.");
+					if (num != null && num != ""){
+						jQuery("body").fizzbuzz("printFizz", num);
+					}
+				})
+			});
+			(function($){
+				$.widget("test.fibonacci",{
+					options: {
+						_arFib: [],
+						_fibHolderSel: ".fibHolder"
+					},
+					printFib: function(num){
+						var that = this;
+						var options = that.options;
+						var divTemp = $("<div style='width:100px'></div>");
+						that._clear();
+						that._generateFibSeq2(num);
+						for(var i = 0; i < options._arFib.length; i++){
+							var fib = options._arFib[i];
+							if(fib % 2 == 0){
+								divTemp.css("background", "yellow");
+								divTemp.css("color", "black");
+							}
+							else{
+								divTemp.css("background", "black");
+								divTemp.css("color", "white");
+							}
+							divTemp.html(fib);
+							jQuery(options._fibHolderSel).append(divTemp.clone());
+						}
+					},
+					_clear: function(){
+						var that = this;
+						var options = that.options;
+						options._arFib = [];
+						jQuery(options._fibHolderSel).html("");
+					},
+					_create: function(){
+						var that = this;
+						var options = that.options;
+						//that.printFib(20);
+					},
+					_generateFibSeq: function(max){ //generates all fib numbers between 1 and max
+						var that = this;
+						var options = that.options;
+						var a = 0;
+						var b = 1;
+						var temp;
+						while(b < max){
+							options._arFib.push(b);
+							temp = a;
+							a = b;
+							b = temp + b;
+						}
+					},
+					_generateFibSeq2: function(num){ //generates num number of fib numbers
+						var that = this;
+						var options = that.options;
+						var a = 0;
+						var b = 1;
+						var temp;
+						for(var i = 0; i < num; i++){
+							options._arFib.push(b);
+							temp = a;
+							a = b;
+							b = temp + b;
+						}
+					}
+				});
+			})(jQuery);
+			(function($){
+				$.widget("test.fizzbuzz",{
+					options: {
+						_fizzHolderSel: ".fizzHolder"
+					},
+					printFizz: function(num){
+						var that = this;
+						var options = that.options;
+						var divTemp = $("<div style='width:100px'></div>");
+						var fizz = $("<span style='background:yellow;'>FIZZ</span>");
+						var buzz = $("<span style='background:gray;'>BUZZ</span>");
+						var fizzbuzz = $("<span style='background:red'>FIZZBUZZ</span>");
+						that._clear();
+						for(var i = 1; i <= num; i++){
+							divTemp.html(i);
+							if(i % 3 == 0){
+								divTemp.html(fizz);
+							}
+							if(i % 5 == 0){
+								divTemp.html(buzz);
+							}
+							if(i % 15 == 0)
+								divTemp.html(fizzbuzz);
+							jQuery(options._fizzHolderSel).append(divTemp.clone());
+						}
+					},
+					_clear: function(){
+						var that = this;
+						var options = that.options;
+						jQuery(options._fizzHolderSel).html("");
+					}
+				});
+			})(jQuery);
+		</script>
+	</head>
+	<body>
+		<h2 id="header">270</h2>
+		<div style="float:left;">
+			<button class="fib" type="button">fibonacci</button>
+			<div class="fibHolder" style="border:1px solid black; width:150px;"></div>
+		</div>
+		<div style="float:left; margin-left:10px;">
+			<button class="fizz" type="button">fizzbuzz</button>
+			<div class="fizzHolder" style="border:1px solid black; width:150px;"></div>
+		</div>
+	</body>
+</html>

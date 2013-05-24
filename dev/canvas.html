@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+ <!-- page designed by mitch gaydash -->
+
+<html>
+
+	<head>
+
+		<meta charset="utf-8"/>
+		
+		<title>
+		Canvas Page
+		</title>
+
+		<style type="text/css">
+		
+		#can
+		{
+		background-color:#aaa;
+		}
+		
+		.buthold
+		{
+		border: 1px solid black;
+		width:400px;
+		height:30px;
+		}
+		
+		.buttons
+		{
+		float:left;
+		width:132px;
+		text-align:center;
+		padding-top:7px;
+		}
+		
+		</style>
+	
+		<script type="text/javascript">
+		
+			var ctx;
+			var draw;
+			var width = 4.0;
+			var col = "rgb(255,255,255)";
+			
+			
+   			/*//initialize the canvas
+  			function start()
+  			{
+      			var scrib = document.getElementById("can");
+      			ctx = scrib.getContext("2d");    
+       
+      			ctx.lineWidth = width; //line width
+      			ctx.strokeStyle = col; //line colour      
+              
+      			//anonymous functions
+       			scrib.onmousedown= function(event) { mousedown(event) };
+       			scrib.onmouseup= function(event) { mouseup(event) };    
+       			scrib.onmousemove= function(event) { mousemove(event) };
+  			 }
+  	
+  			 function mousedown(event) 
+  			 {
+  			 draw=1
+  			 }
+  			 
+  			 function mouseup(event)
+  			 {
+  			 draw=0
+  			 }
+  			 
+  			 //movenent
+  			 function mousemove(event)
+  			 {
+  			 	if(draw==1)
+  			 	{
+  			 	ctx.lineTo(event.clientX, event.clientY);
+  			 	ctx.stroke();
+  			 	}
+  			 }
+  			 
+  			 function clr()
+  			 {
+  			 	col="rgb("
+            	+ Math.floor(Math.random()*255) + ","
+            	+ Math.floor(Math.random()*255) + ","
+            	+ Math.floor(Math.random()*255) + ")";
+            	
+            	start()
+  			 }*/
+  			 
+  			 function start()
+{
+    var scribbler = document.getElementById ("can");
+    context = scribbler.getContext ("2d");
+    scribbler.onmousedown = function (event) {mousedown(event)};
+    scribbler.onmousemove = function (event) {mousemove(event)};
+    scribbler.onmouseup   = function (event) {mouseup(event)};
+}
+
+/* Get the position of the mouse. */
+
+function getPosition(evt)
+{
+    evt = (evt) ?  evt : ((event) ? event : null);
+    var left = 0;
+    var top = 0;
+    var scribbler = document.getElementById("scribbler");
+
+    if (evt.pageX) {
+        left = evt.pageX;
+        top  = evt.pageY;
+    } else {
+        left = evt.clientX + document.documentElement.scrollLeft;
+        top  = evt.clientY +  document.documentElement.scrollTop;
+    }
+    for (var o = scribbler; o ; o = o.offsetParent) {
+        left -= (o.offsetLeft - o.scrollLeft);
+        top  -= (o.offsetTop - o.scrollTop);
+    }
+    return {x : left, y : top}; 
+}
+
+/* Make a random colour. */
+
+function random_colour()
+{
+    var colour = new String();
+    for (var i = 0; i < 3; i++) {
+        var random16 = Math.floor (Math.random() * 16);
+        colour = colour.concat (random16.toString(16).toUpperCase());
+    }
+    return colour;
+}
+
+/* React to a mouse push. */
+
+function
+mousedown(event)
+{
+    drawing = true;
+    var location = getPosition(event);
+    context.lineWidth = 4.0;
+    context.strokeStyle="#"+random_colour();
+    context.beginPath();
+    context.moveTo(location.x,location.y);
+}
+
+/* React to a mouse move. */
+
+function
+mousemove(event)
+{
+    if (!drawing) 
+        return;
+    var location = getPosition(event);
+    context.lineTo(location.x,location.y);
+    context.stroke();
+}
+
+/* React to a mouse release. */
+
+function
+mouseup(event)
+{
+    if (!drawing) 
+        return;
+    mousemove(event);
+    drawing = false;
+}
+
+
+		
+		</script>
+
+	</head>
+	
+	<body onload="start()">
+    	
+    	<div>
+    	<canvas width="400" height="400" id="can"></canvas>
+    	</div>
+    	
+   		<div class="buthold">
+   			<div class="buttons" onclick="clr()">
+   			New Colour
+   			</div>
+   			<div class="buttons">
+   			Increase Width
+   			</div>
+   			<div class="buttons">
+   			Decrease Width
+   			</div>
+   		</div>
+	</body>
+
+</html>

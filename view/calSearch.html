@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>cal search</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+			// nav
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery("#nav").load("../view/nav.html");
+				
+				jQuery("body").editWoDateForm();
+				jQuery(document).trigger("openEditWoDateForm");
+				jQuery(".openWoEdit").click(function(){
+					jQuery("body").trigger("openEditWoDateForm");
+				});
+				
+			// "big" button on dropdown bar
+				jQuery(".big").click(function(){
+					var v = jQuery(".bigger");
+					if(v.css("width") == "98px")
+						v.css("width", "300px");
+					else{
+						v.css("width", "100px");
+					}
+				});
+			});
+			
+			(function($){
+				$.widget("df.codeBase",{
+					options: {
+
+					},
+					_ajaxCall: function(callback, data, url){
+						var that = this;
+						var d = new $.Deferred();
+						var success = true;
+						$.ajax({
+							cache: false,
+							complete: function(jqXHR, textStatus){
+								d.resolve(success);
+							},
+							data: data,
+							dataType: "text",
+							error: function(jqXHR, textStatus, errorThrown){
+								success = false;
+							},
+							success: function(data, textStatus, jqXHR){
+								callback(data, that);
+							},
+							url: url
+						});
+						return d.promise();
+					}
+				});
+			})(jQuery);
+			(function($){
+				var instanceNum = 0;
+				$.widget("df.calForm", $.df.codeBase, {
+					options: {
+						htmlTemplateSel: undefined, //OVERRIDE
+						//element selectors
+						_targetSel: undefined,
+						//element objects
+						_divTitleBarSel: ".df_editWoDateForm_title",
+						_formContainer: undefined,
+						_htmlTemplate: undefined,
+						//misc
+						_classString: undefined,
+						_isDisplayed: false,
+						_isSelected: false
+					},
+					_addZIndexingEventHandlers: function(){
+						var that = this;
+						var options = that.options;
+						//fire event when form is clicked
+						options._formContainer.mousedown(function(e){
+							$(document).trigger("formSelected");
+							options._formContainer.css("z-index", "101");
+							options._isSelected = true;
+						});
+						//handle event
+						$(document).bind("formSelected", function(){
+							options._formContainer.css("z-index", "100");
+							options._isSelected = false;
+						});
+					},
+					_clearForm: function(){
+						var that = this;
+						var options = that.options;
+						options._formContainer.find("input").val("");
+					},
+					_closeForm: function(){
+						var that = this;
+						var options = that.options;
+						options._formContainer.css("display", "none");
+						that._clearForm();
+						options._isDisplayed = false;
+					},
+					_create: function(){
+						var that = this;
+						that._generateUniqueClass();
+						that._getWidgetTargetElementSelector();
+						that._makeFormContainer();
+						//that._addZIndexingEventHandlers();
+						that._retrieveHtmlTemplateFromDom();
+					},
+					_displayForm: function(){
+						var that = this;
+						var options = that.options;
+						options._formContainer.css("display", "block");
+						//options._formContainer.trigger("mousedown");
+						options._isDisplayed = true;
+						//options._isSelected = true;
+					},
+					_generateUniqueClass: function(){
+						var that = this;
+						var options = that.options;
+						var s = "df_" + that.widgetName + "_default_formContainer_" + instanceNum;
+						options._classString = s;
+						instanceNum++;
+					},
+					_getWidgetTargetElementSelector: function(){
+						var that = this;
+						var options = that.options;
+						options._targetSel = that.element[0].nodeName;
+					},
+					_makeFormContainer: function(){
+						var that = this;
+						var options = that.options;
+						options._formContainer = $("<div></div>");
+						options._formContainer.draggable({
+							handle: options._divTitleBarSel
+						});
+						//style form container
+						options._formContainer.addClass(options._classString);
+						options._formContainer.css("display", "none");
+						options._formContainer.css("position", "absolute");
+						options._formContainer.css("z-index", "100");
+						//insert into dom
+						$(options._targetSel).append(options._formContainer);
+					},
+					_retrieveHtmlTemplateFromDom: function(){
+						var that = this;
+						var options = that.options;
+						options._htmlTemplate = $(options.htmlTemplateSel).remove();
+						options._formContainer.html(options._htmlTemplate);
+					}
+				});
+			})(jQuery);
+			(function($){
+				$.widget("df.woDateForm", $.df.calForm, {
+					options: {
+						htmlTemplateSel: ".df_editWoDateForm",
+						//element objects
+						_btnCancel: undefined,
+						_btnSave: undefined,
+						_btnOpenWo: undefined,
+						_divEndMin: undefined,
+						_divStartMin: undefined,
+						_divWorkName: undefined,
+						_inputEndDate: undefined,
+						_inputStartDate: undefined,
+						_selForeman: undefined,
+						_selectEndAmPm: undefined,
+						_selectEndHour: undefined,
+						_selectStartAmPm: undefined,
+						_selectStartHour: undefined,
+						_textDescription: undefined,
+						
+						//element selectors
+						_btnCancelSel: ".df_editWorkDateForm_cancel",
+						_btnSaveSel: ".df_editWorkDateForm_save",
+						_btnOpenWoSel: ".df_editWorkDateForm_openWo",
+						_divEndMinSel: ".df_editWoDateForm_endMin",
+						_divStartMinSel: ".df_editWoDateForm_startMin",
+						_divWorkNameSel: ".df_editWoDateForm_workName",
+						_inputEndDateSel: ".df_editWoDate_ed",
+						_inputStartDateSel: ".df_editWoDate_startHour",
+						_selForemanSel: ".df_editWoDateForm_foreman",
+						_selectEndAmPmSel: ".df_editWoDateForm_endAmPm",
+						_selectEndHourSel: ".df_editWoDateForm_endHour",
+						_selectStartAmPmSel: ".df_editWoDateForm_startAmPm",
+						_selectStartHourSel: ".df_editWoDateForm_startHour",
+						_textDescriptionSel: ".df_editWoDateForm_description",
+						
+						//misc
+						_timeOptions: [{label: "00", value:undefined}, {label: "15", value:undefined}, {label: "30", value:undefined}, {label: "45", value:undefined}]
+					},
+					_addWidgetsToForm: function(){
+						var that = this;
+						var options = that.options;
+						options._divStartMin.combobox({
+							optionAr: options._timeOptions
+						});
+						options._divEndMin.combobox({
+							optionAr: options._timeOptions
+						});
+					},
+					_create: function(){
+						var that = this;
+						$.df.calForm.prototype._create.call(that);
+						that._makeElementObjectsFromTemplate();
+						that._bindIntraWidgetEvents();
+						that._addWidgetsToForm();
+					},
+					_bindIntraWidgetEvents: function(){
+						var that = this;
+						var options = that.options;
+						options._btnCancel.click(function(){
+							that._closeForm();
+						});
+					},
+					_makeElementObjectsFromTemplate: function(){
+						var that = this;
+						var options = that.options;
+						options._btnCancel = options._formContainer.find(options._btnCancelSel);
+						options._btnSave = options._formContainer.find(options._btnSaveSel);
+						options._btnOpenWo = options._formContainer.find(options._btnOpenWoSel);
+						options._divEndMin = options._formContainer.find(options._divEndMinSel);
+						options._divStartMin = options._formContainer.find(options._divStartMinSel);
+						options._divWorkName = options._formContainer.find(options._divWorkNameSel);
+						options._inputEndDate = options._formContainer.find(options._inputEndDateSel);
+						options._inputStartDate = options._formContainer.find(options._inputStartDateSel);
+						options._selForeman = options._formContainer.find(options._selForemanSel);
+						options._selectEndAmPm = options._formContainer.find(options._selectEndAmPmSel);
+						options._selectEndHour = options._formContainer.find(options._selectEndHourSel);
+						options._selectStartAmPm = options._formContainer.find(options._selectStartAmPmSel);
+						options._selectStartHour = options._formContainer.find(options._selectStartHourSel);
+						options._textDescription = options._formContainer.find(options._textDescriptionSel);
+					}
+				});
+			})(jQuery);
+			(function($){
+				$.widget("df.editWoDateForm", $.df.woDateForm, {
+					options: {
+						//events (responds to)
+						_eventOpenEditWoDateForm: "openEditWoDateForm",
+						_eventCloseEditWoDateForm: "closeEditWoDateForm"
+						
+						//events (triggers)
+						
+						//events (both)
+					},
+					_create: function(){
+						var that = this;
+						$.df.woDateForm.prototype._create.call(that);
+						that._addEventListeners();
+					},
+					_addEventListeners: function(){
+						var that = this;
+						var options =  that.options;
+						$(document).bind(options._eventOpenEditWoDateForm, function(){
+							that._displayForm();
+						});
+						$(document).bind(options._eventCloseEditWoDateForm, function(){
+							that._closeForm();
+						});
+					}
+				});
+			})(jQuery);
+			(function($){
+				$.widget("df.createWoDateForm", $.df.woDateForm, {
+					options: {
+
+					},
+					_create: function(){
+						var that = this;
+						$.df.woDateForm.prototype._create.call(that);
+					}
+				});
+			})(jQuery);
+			(function($){
+				$.widget("df.combobox", {
+					options: {
+						height: 18, //don't change the damn height from 18
+						width: 30,
+						optionAr: [],
+						_htmlTemplate: undefined,
+						_htmlTemplateSel: ".df_combobox",
+						//element objects
+						_inputText: undefined,
+						_selectText: undefined,
+						//element selectors
+						_inputTextSel: ".df_combobox_input",
+						_selectTextSel: ".df_combobox_select"
+					},
+					getValue: function(){
+						var that = this;
+						var options = that.options;
+						return options._inputText.val();
+					},
+					_bindIntraWidgetEvents: function(){
+						var that = this;
+						var options = that.options;
+						//select
+						options._selectText.keyup(function(k){
+							options._inputText.val(options._selectText.val());
+							options._inputText.focus();
+						});
+						options._selectText.change(function(){
+							options._inputText.val(options._selectText.val());
+							options._inputText.focus();
+						});
+						//input
+						options._inputText.keydown(function(k){
+							if(k.keyCode == 38 || k.keyCode == 40){
+								options._selectText.focus();
+							}
+						});
+					},
+					_create: function(){
+						var that = this;
+						that._retrieveHtmlTemplateFromDom();
+						that._makeElementObjectsFromTemplate();
+						that._makeOptionElementsFromAr();
+						that._bindIntraWidgetEvents();
+						that._setDimentions();
+						that._insertIntoTargetElement();
+					},
+					_insertIntoTargetElement: function(){
+						var that = this;
+						var options = that.options;
+						that.element.html(options._htmlTemplate);
+					},
+					_makeElementObjectsFromTemplate: function(){
+						var that = this;
+						var options = that.options;
+						options._inputText = options._htmlTemplate.find(options._inputTextSel);
+						options._selectText = options._htmlTemplate.find(options._selectTextSel);
+					},
+					_makeOptionElementsFromAr: function(){
+						var that = this;
+						var options = that.options;
+						var optionAr = options.optionAr;
+						for(var i = 0; i < optionAr.length; i++){
+							var opt = $("<option></option>")
+							opt.html(optionAr[i].label);
+							if(optionAr[i].value)
+								opt.attr("value", optionAr[i].value);
+							else
+								opt.attr("value", optionAr[i].label);
+							options._selectText.append(opt.clone());
+						}
+					},
+					_retrieveHtmlTemplateFromDom: function(){
+						var that = this;
+						var options = that.options;
+						options._htmlTemplate = $(options._htmlTemplateSel).clone();
+						options._htmlTemplate.removeAttr("class");
+					},
+					_setDimentions: function(){
+						var that = this;
+						var options = that.options;
+						var inputH = options.height;
+						var inputW = options.width;
+						var selH = inputH + 4;
+						var selW = inputW + 24;
+						var selLeft = -(inputW + 8);
+						
+						options._inputText.css({
+							height: inputH,
+							width: inputW
+						});
+						options._selectText.css({
+							height: selH,
+							width: selW,
+							left: selLeft
+						})
+					}
+				});
+			})(jQuery);
+		</script>
+		<style>
+			
+		</style>
+	</head>
+	<body style="padding:10px;">
+		<div style="width:600px; height:50px;">space</div>
+		
+		<button class="openWoEdit" type="button">open wo edit</button>
+		
+		<div style="width:600px; height:50px;">space</div>
+		
+		<div style="display:none;">
+			<!-- ########## Edit Work Order Date Form Template ########## -->
+			<div class="df_editWoDateForm" style="background-color:#c7c7c7; border:2px solid black; border-radius:10px; font-family:arial, sans-serif; font-size:13px; height:300px; width:500px;">
+				<div class="df_editWoDateForm_title" style="background-color:#888888; border-bottom:1px solid black; border-top-left-radius:8px; border-top-right-radius:8px; font-size:18px; padding:0px 0px 0px 15px;">Edit Work Order Date</div>
+				<table style="border:0px solid black; margin:2px 0px 0px 19px;">
+					<tbody>
+						<tr style="height:28px;">
+							<td style="text-align:right;">
+								Start Date:
+							</td>
+							<td style="padding:0px 0px 0px 10px;">
+								<input class="df_editWoDate_sd" style="border:1px solid black; height:18px; left:0px; margin:0px; padding:1px; width:70px;" type="text"/>
+							</td>
+						</tr>
+						<tr style="height:28px;">
+							<td style="text-align:right;">
+								End Date:
+							</td>
+							<td style="padding:0px 0px 0px 10px;">
+								<input class="df_editWoDate_ed" style="border:1px solid black; height:18px; left:0px; margin:0px; padding:1px; width:70px;"	 type="text"/>
+							</td>
+						</tr>
+						<tr style="height:28px;">
+							<td style="text-align:right;">
+								Time:
+							</td>
+							<td style="padding:0px 0px 0px 10px;">
+								<select class="df_editWoDateForm_startHour" style="border:1px solid black; height:22px; left:110px; margin:0px; position:absolute; top:92px; width:50px; padding:1px;">
+									<option>12</option>
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+									<option>6</option>
+									<option>7</option>
+									<option>8</option>
+									<option>9</option>
+									<option>10</option>
+									<option>11</option>
+								</select>
+								<div style="position:absolute; left:163px; top:92px;">:</div>
+								<div class="df_editWoDateForm_startMin" style="left:169px; position:absolute; top:92px;"></div>
+								<select class="df_editWoDateForm_startAmPm" style="border:1px solid black; height:22px; left:228px; margin:0px; position:absolute; top:92px; width:50px; padding:1px;">
+									<option>PM</option>
+									<option>AM</option>
+								</select>
+								<span style="left:286px; position:absolute; top:94px;">to</span>
+								<select class="df_editWoDateForm_endHour" style="border:1px solid black; float:left; left:304px; height:22px; margin:0px; position:absolute; top:92px; width:50px; padding:1px;">
+									<option>12</option>
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+									<option>6</option>
+									<option>7</option>
+									<option>8</option>
+									<option>9</option>
+									<option>10</option>
+									<option>11</option>
+								</select>
+								<div style="left:357px; position:absolute; top:92px;">:</div>
+								<div class="df_editWoDateForm_endMin" style="left:364px; position:absolute; top:92px;"></div>
+								<select class="df_editWoDateForm_endAmPm" style="border:1px solid black; float:left; height:22px; left:423px; margin:0px; position:absolute; top:92px;	 width:50px; padding:1px;">
+									<option>PM</option>
+									<option>AM</option>
+								</select>
+							</td>
+						</tr>
+						<tr style="height:28px;">
+							<td style="text-align:right;">
+								Foreman:
+							</td>
+							<td style="padding:0px 0px 0px 10px;">
+								<select class="df_editWoDateForm_foreman" style="border:1px solid black; height:22px; margin:0px; min-width:100px; padding:1px;">
+									<option>test1</option>
+									<option>test2</option>
+									<option>test3</option>
+								</select>
+							</td>
+						</tr>
+						<tr style="height:28px;">
+							<td style="text-align:right;">
+								Work Name:
+							</td>
+							<td style="padding:0px 0px 0px 10px;">
+								<div class="df_editWoDateForm_workName" style="border:1px solid black; height:20px; width:369px;"></div>
+							</td>
+						</tr>
+						<tr style="height:28px;">
+							<td style="text-align:right;">
+								Description:
+							</td>
+							<td style="padding:0px 0px 0px 10px;">
+								<textarea class="df_editWoDateForm_description" style="border:1px solid black; height:50px; resize:none; width:368px;"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div style="margin:10px 0px 0px 0px;">
+					<button class="df_editWorkDateForm_cancel" style="margin:0px 0px 0px 16px;" type="button">Cancel</button>
+					<button class="df_editWorkDateForm_save" type="button">Save</button>
+					<button class="df_editWorkDateForm_openWo" style="float:right; margin:0px 16px 0px 0px;" type="button">Open WO</button>
+				</div>
+			</div>
+
+			<!-- ########## Combobox Template ########## -->
+			<div class="df_combobox">
+				<input class="df_combobox_input" style="border:1px solid black; height:18px; left:0px; margin:0px; padding:1px; position:relative; width:70px; z-index:11;" type="text" value="00"/>
+				<select class="df_combobox_select" style="border:1px solid black; height:22px; left:-78px; margin:0px; padding:1px; position:relative; top:0px; width:94px; z-index:10;" tabindex="500">
+				</select>
+			</div>
+		</div>
+		
+		<div style="width:600px; height:50px;">space</div>
+		
+		<!-- ########## Drop Down Bar ########## -->
+		<div style="background-color:red; display:inline-block; float:left; height:25px; padding:3px; white-space:nowrap; min-width:100%;">
+			<select style="width:200px;">
+				<option>test</option>
+				<option>test0</option>
+			</select>
+			<select class="bigger" style="width:100px;">
+				<option>test</option>
+				<option>test1</option>
+			</select>
+			<select style="width:200px;">
+				<option>test</option>
+				<option>test2</option>
+			</select>
+			<select style="width:150px;">
+				<option>test</option>
+				<option>test3</option>
+			</select>
+			<select style="width:150px;">
+				<option>test</option>
+				<option>test4</option>
+			</select>
+			<select style="">
+				<option>test</option>
+				<option>test5</option>
+			</select>
+			<select style="">
+				<option>test</option>
+				<option>test6</option>
+			</select>
+			<select style="width:200px;">
+				<option>test</option>
+				<option>test7</option>
+			</select>
+			<select style="width:150px;">
+				<option>test</option>
+				<option>test8</option>
+			</select>
+			<button class="big" type="button">big</button>
+			<button type="button">dummy</button>
+		</div>
+	</body>
+</html>

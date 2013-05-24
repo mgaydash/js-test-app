@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Fiddle</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script>
+			function randomizeStyles(){
+				for(var i = 0; i < 9; i++){
+					var div = document.getElementById("div" + i);
+					div.className = "basic style" + Math.floor(Math.random() * 3);
+					div.addEventListener("click", randomizeStyles, false); //addEventListener will not stack event listeners, so doing this repeatedly
+																		   //will not cuase multiple calls to the function - clicking will never call 
+																		   //rendomizeStyles more than once
+				}
+				//console.log("randomizeStyles");
+			}
+		</script>
+		<style>
+			.basic{
+				float:left;
+				height:60px;
+				margin:5px 0px 0px 5px;
+				width:100px;
+			}
+			.style0{
+				background-color:purple;
+				border:2px solid orange;
+			}
+			.style1{
+				background-color:blue;
+				border:2px solid red;
+			}
+			.style2{
+				background-color:green;
+				border:2px solid yellow;
+			}
+		</style>
+	</head>
+	<body onload="randomizeStyles();">
+		<div class="basic" id="div0"></div>
+		<div class="basic" id="div1"></div>
+		<div class="basic" id="div2"></div>
+		<div style="clear:both;"></div>
+		<div class="basic" id="div3"></div>
+		<div class="basic" id="div4"></div>
+		<div class="basic" id="div5"></div>
+		<div style="clear:both;"></div>
+		<div class="basic" id="div6"></div>
+		<div class="basic" id="div7"></div>
+		<div class="basic" id="div8"></div>
+	</body>
+</html>

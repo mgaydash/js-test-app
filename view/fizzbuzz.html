@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>FibFizz</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script>
+			function fibonacci(num){
+				if(!num || !validateNum(num))
+					return;
+				var a = 0;
+				var b = 1;
+				var temp;
+				var arFib = [];
+				var fibDiv = document.createElement("div");
+				fibDiv.style.top = "275px";
+				fibDiv.style.left = "780px";
+				fibDiv.style.position = "absolute";
+				fibDiv.style.border = "2px solid black";
+				fibDiv.style.borderTop = "none";
+				console.log(fibDiv);
+				for(var i = 0; i < num; i++){
+					arFib.push(a);
+					temp = a;
+					a = b;
+					b = temp + b;
+				}
+				for(var i = 0; i < arFib.length; i++){
+					if(arFib[i] % 2 == 0)
+						fibDiv.innerHTML += "<div class='fbRow' style='background:yellow; color:black;'>" + arFib[i] + "</div>";
+					else
+						fibDiv.innerHTML += "<div class='fbRow' style='background:black; color:white;'>" + arFib[i] + "</div>";
+				}
+				document.write("<!DOCTYPE html>" + document.head.outerHTML + "<body>" + document.body.innerHTML + fibDiv.outerHTML + "</body></html>");
+				document.close();
+			}
+			function fizzbuzz(num){
+				var html = "";
+				if(!num || !validateNum(num))
+					return;
+				for(var i = 1; i <= num; i++){
+					if(i % 3 == 0 && i % 5 == 0)
+						html += "<div class='fbRow' style='background:red; color:white;'>FIZZBUZZ</div>";
+					else if(i % 3 == 0)
+						html += "<div class='fbRow' style='background:yellow; color:black;'>FIZZ</div>";
+					else if(i % 5 == 0)
+						html += "<div class='fbRow' style='background:black; color:white;'>BUZZ</div>";
+					else
+						html += "<div class='fbRow' style='background:white; color:black;'>" + i + "</div>";
+				}
+				var out = document.getElementById("fizzOutput");
+				out.style.display = "block";
+				out.innerHTML = html;
+			}
+			function promptForNum(){
+				var num = prompt("Please enter a number between 1 and 30.", 20);
+				return num;
+			}
+			function validateNum(num){
+				num = parseInt(num);
+				if(num > 30 || num < 1){
+					alert("Enter a number between 1 and 30.");
+					return false;
+				}
+				if(!num){
+					alert("A non-number was entered.");
+					return false;
+				}
+				return true;
+			}
+		</script>
+		<style>
+			.fbRow{
+				border-top:2px solid black;
+				text-align:center; 
+				width:80px;
+			}
+			.holder{
+				border:2px solid black; 
+				float:left; 
+				margin-left:20px; 
+				min-height:225px; 
+				padding:10px; 
+				width:500px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="holder" style="background:#00cc88;">
+			<h1>FizzBuzz</h1>
+			<p onclick="fizzbuzz(promptForNum());">
+				When you click on this paragraph, you will be prompted to enter a number.  You will get a list
+				of numbers starting at 1 and ending at the number input.  If the number is divisible by 3, it will
+				be labeled "fizz" and colored yellow.  If the number is divisible by 5, it will be labeled "buzz"
+				and colored black.  If the number if divisible by both 3 and 5, then it will be labeled "fizzbuzz"
+				and colored red.
+			</p>
+		</div>
+		<div id="fizzOutput" style="border:2px solid black; border-top:none; display:none; left:240px; position:absolute; top:275px; width:80px;">
+
+		</div>
+		<div class="holder" style="background:#0088cc;">
+			<h1>Fibonacci</h1>
+			<p onclick="fibonacci(promptForNum());">
+				Click on this paragraph.  You will be prompted for a number, and a list of that many fibonacci 
+				numbers will be printed out 
+			</p>
+		</div>
+	</body>
+</html>

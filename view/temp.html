@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<title>
+			test page
+		</title>
+		<style>
+			/*body{font-family:"Arial";}*/
+			.durationForm{
+				font-family:"Arial";
+			}
+			.durationDialog .ui-dialog-content{padding: 0px;}
+			.durationDialog .ui-dialog-titlebar{display:none;}
+		</style>
+	</head>
+	<body>
+		<h1>test</h1>
+		<div id="content">
+			<div class="context" id="testDiv0" style="background-color:red; margin:10px 0px 0px 0px; width:300px;"> test</div>
+		</div>
+		<div id="durationFormHolder" style="display:none;"></div>
+		<button id="openDuration" type="button">open duration</button>
+	</body>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			var tempDiv = jQuery("#testDiv0").clone();
+			tempDiv.removeAttr("id");
+			for(var i = 1; i < 6; i++)
+				tempDiv.clone().attr('id', 'testDiv' + i).appendTo('#content');
+			addContextMenu();
+			jQuery("#openDuration").click(function(){
+				getDurationForm();
+			});
+		});
+		function addContextMenu(){
+			var callbackFuncObj = function(elementId, menuOption){
+				switch(menuOption){
+					case "edit":
+						alert("Editing " + elementId);
+						break;
+					case "extend":
+						alert("Extending " + elementId);
+						break;
+				}
+			};
+			var contextItemObj = {
+				"edit":{
+					icon: "",
+					name: "Edit Phase",
+				},
+				"extend":{
+					icon: "",
+					name: "Extend Phase",
+				},
+			};
+			jQuery.contextMenu({
+				selector: '.context', 
+				callback: function(menuOption, options){
+					callbackFuncObj(jQuery(this).attr('id'), menuOption);
+				},
+				items: contextItemObj
+			});
+		}
+		
+		function displayDurationForm(durationForm){
+			durationForm.dialog({
+				dialogClass:'durationDialog', 
+				draggable:false, 
+				height:245, 
+				modal:true,
+				resizable:false, 
+				width:400,
+			});
+		}
+		function getDurationForm(){
+			jQuery.get(
+				"../view/durationForm.jsp",
+				function(response){
+					prepareDurationForm(jQuery(response).clone(true));
+				},
+				"html"
+			);
+		}
+		function prepareDurationForm(durationForm){
+			jQuery.getJSON(
+				"../file/testObj.json",
+				function(response){
+					durationForm.find("#phaseName").html(response.phase);
+					durationForm.find("#duration").html(response.duration);
+					durationForm.find("#durationFormClose").click(function(){durationForm.dialog('close');});
+					displayDurationForm(durationForm);
+				}
+			);
+		}
+	</script>
+</html>
