@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+            <script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+            <script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+	    <script src="../js/eventCalendar.js" type="text/javascript"></script>
+            <link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+            <link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+            <title>
+                    Search 
+            </title>
+            <script type="text/javascript">
+                    function relocate(where){
+                            window.location.replace(where);
+                    }
+            </script>
+            <style>
+                #headerBar,#mainContent,.monthRow{
+                    width:100%;
+                    float:break;
+                }
+                #headerBar,#pagingBox,#miniCalContainer{
+                    border:1px solid black;
+                    border-radius:5px;
+                }
+                #leftContainer,#rightContainer{
+                    float:left;
+                    height:100%;
+                }
+                #leftContainer{
+                    width:25%;
+                    min-width: 250px;
+                }
+                #rightContainer{
+                    width:75%;
+                }
+                .monthDay{
+                    height:150px;
+                    min-width: 100px;
+                }
+                .button{
+                    float:left;
+                }
+                .rightButton{
+                    float:break;
+                }
+                #pagingBox{
+                    height:200px;
+                    background-color: white;
+                    margin:auto;
+                    padding-top:10px;
+                    padding-left:10px;
+                }
+                .navButtonRow{
+                    display:inline-block;
+                    width:50%;
+                    margin:auto;
+                }
+                .navRow{
+                    display:inline-block;
+                    width:100%;
+                }
+                #dateLabel{
+                    font-size: 12px;
+                }
+                #smallCalendar{
+                    height:300px;
+                }
+                .miniDay,.miniTitle{
+                    width:20px;
+                    height:20px;
+                    text-align: center;
+                    cursor:pointer;
+                }
+                .button{
+                    border:1px solid black;
+                }
+                .rightButton{
+                    border-bottom-right-radius:5px;
+                    border-top-right-radius:5px;
+                }
+                .leftButton{
+                    border-bottom-left-radius:5px;
+                    border-top-left-radius:5px;
+                }
+                #smallCalendar{
+                    border:1px solid black;
+                    border-radius: 5px;
+                    margin:auto;
+                    width:200px;
+                    height:180px;
+                }
+                #miniCalContainer{
+                    height:200px;
+                    height:200px;
+                    padding-top:10px;
+                    background-color: white;
+                    margin-top: 10px;
+                }
+                #miniCalNavBar{
+                    border-bottom:1px solid black;
+                    background-color:#ddd;
+                    font-weight: bold;
+                }
+                #weekTitles{
+                    font-weight: bold;
+                }
+                #eventCalendar{
+                    width:100%;
+                }
+                #mainContent{
+                    overflow:hidden;
+                }
+                .monthDayTitle,.weekDayTitle,.dayTitle{
+                    padding-right:3px;
+                    border-bottom:0px;
+                    font-weight: bold;
+                    font-size: 12px;
+                    background-color:#eef;
+                    border-right:1px solid black;
+                    border-top:1px solid black;
+                    border-color:#aaf;
+                }
+                .monthDayTitle{
+                    height:12%;
+                }
+                .weekDayTitle,.dayTitle{
+                    height:15px;
+                }
+                .monthDayBody{
+                    height:88%;
+                    border-right:1px solid black;
+                    border-top:1px solid black;
+                    border-color:#aaf;
+                    background-color:#ccc;
+                }
+                .weekDayBody{
+                    height:80px;
+                    border-right:1px solid;
+                    border-top:1px solid;
+                    border-color:#aaf;
+                    background-color:white;
+                }
+                .hourCellBody{
+                    height:80px;
+                    border-right:2px solid;
+                    border-top:1px solid;
+                    border-color:#aaf;
+                }
+                .monthDayLabel,.weekDayLabel,.dayLabel{
+                    color:red;
+                }
+                body{
+                    background-color:#333;
+                }
+                .hourCell{
+                    width:90px;
+                    height:70px;
+                    border-color:#bbf;
+                    background-color:#ddf;
+                }
+                .weekDay{
+                    height:80px;
+                }
+                .day{
+                    height:80px;
+                }
+                .dayBody{
+                    height:80px;
+                    border-right:1px solid;
+                    border-top:1px solid;
+                    border-color:#aaf;
+                    background-color:white;
+                }
+            </style>
+    </head>
+    <body>
+	<button onclick="relocate('../index.html')">Home Page</button>
+        <div id="headerBar">
+            <div id="headerButtons">
+                &nbsp;
+                <select style="width:100px;"><option>username</option></select>
+                <select style="width:100px;"><option>Event Type</option></select>
+                <select style="width:100px;"><option>Lock</option></select>
+                <button style="width:60px;">Search</button>
+                <button style="width:50px;">Reset</button>
+            </div>
+        </div>
+        <div id="mainContent">
+            <div id="leftContainer">
+                <div id="pagingBoxContainer">
+                    <div id="pagingBox">
+                        <div class="navButtonRow">
+                            <div id="backButton" class="leftButton button"><<<</div>
+                            <div id="todayButton" class="button">today</div>
+                            <div id="forwardButton" class="rightButton button">>>></div>
+                        </div>
+                        <div id="dateLabelContainer"><div id="dateLabel"></div></div>
+                        <div class="navButtonRow">
+                            <div id="monthButton" class="leftButton button">month</div>
+                            <div id="weekButton" class="button">week</div>
+                            <div id="dayButton" class="rightButton button">day</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="miniCalContainer">
+                    <table id="smallCalendar">
+                        <tr id="miniCalNavBar" class="navRow" align="center">
+                            <td colspan="7">
+                                <button id="miniPageLeftButton"><</button>
+                                <span id="monthLabel">October</span>&nbsp;<span id="yearLabel">2012</span>
+                                <button id="miniPageRightButton">></button>
+                            </td>
+                        </tr>
+                        <tr id="weekTitles" class="navRow" align="center">
+                            <td class="miniTitle">S</td>
+                            <td class="miniTitle">M</td>
+                            <td class="miniTitle">T</td>
+                            <td class="miniTitle">W</td>
+                            <td class="miniTitle">T</td>
+                            <td class="miniTitle">F</td>
+                            <td class="miniTitle">S</td>
+                        </tr>
+                        <tr class="miniWeekRow navRow" align="center">
+                            <td class="sunday miniDay">1</td>
+                            <td class="monday miniDay">1</td>
+                            <td class="tuesday miniDay">1</td>
+                            <td class="wednesday miniDay">1</td>
+                            <td class="thursday miniDay">1</td>
+                            <td class="friday miniDay">1</td>
+                            <td class="saturday miniDay">1</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="rightContainer">
+                <table id="eventCalendar" cellspacing="0" cellpadding="0">
+                    <tr class="monthTitleRow">
+                        <td class="Sun monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Sun</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Mon monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Mon</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Tues monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Tues</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Wed monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Wed</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Thurs monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Thu</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Fri monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Fri</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Sat monthDay"><div class="monthDayTitle"><span class="monthDayLabel" style="float:left;">&nbsp;Sat</span><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                    </tr>
+                    <tr class="monthRow">
+                        <td class="Sun monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Mon monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Tues monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Wed monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Thurs monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Fri monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                        <td class="Sat monthDay"><div class="monthDayTitle"><span class="monthDayNumber" style="float:right;">1&nbsp;</span></div><div class="monthDayBody"></div></td>
+                    </tr>
+                    <tr class="weekTitleRow">
+                        <th style="width:90px;height:15px;"></th>
+                        <th class="Sun weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Sun</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                        <th class="Mon weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Mon</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                        <th class="Tues weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Tue</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                        <th class="Wed weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Wed</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                        <th class="Thurs weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Thu</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                        <th class="Fri weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Fri</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                        <th class="Sat weekDayTitle"><span class="weekDayLabel" style="float:left;">&nbsp;Sat</span><span class="weekDayNumber" style="float:right;">1&nbsp;</span></th>
+                    </tr>
+                    <tr class="weekRow">
+                        <td class="hourCell"><div class="hourCellBody" style="text-align:center;">12:00 AM</td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                        <td class="weekDay"><div class="weekDayBody"></div></td>
+                    </tr>
+                    <tr class="dayTitleRow">
+                        <th style="width:90px;height:15px;"></th>
+                        <th class="dayTitle"><span class="dayLabel" style="float:left;">&nbsp;Sun</span><span class="dayNumber" style="float:right;">1&nbsp;</span></th>
+                    </tr>
+                    <tr class="dayRow">
+                        <td class="hourCell"><div class="hourCellBody" style="text-align:center;">12:00 AM</td>
+                        <td class="day"><div class="dayBody"></div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
