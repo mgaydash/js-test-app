@@ -10,7 +10,7 @@
 		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
 		<link href="../css/test.css" rel="stylesheet" type="text/css" />
 		<title>
-			paint 
+			box sizing
 		</title>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
@@ -21,7 +21,14 @@
 						jQuery("#nav").html(response);
 					},
 					"html"
-				);		
+				);
+
+				var o = ""
+				for(var i = 0; i < 50; i++){
+					o += "# ";
+					console.log(o);
+				}
+
 			});
 		</script>
 		<style>

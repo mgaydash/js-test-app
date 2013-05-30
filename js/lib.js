@@ -9,6 +9,42 @@
     });
 })(jQuery);
    
+function keydownTimeout(inputObj, func, timeout, clearIfEmpty){
+	inputObj.keydown(function(){
+		clearTimeout(window.timeoutFunc);
+		timeoutFunc = setTimeout(
+			function(){
+				func();
+			},
+			timeout
+		);
+		if(clearIfEmpty){
+			if(inputObj.val().length === 0){
+				clearTimeout(timeoutFunc);
+			}
+		}
+	});
+}
+
+//this is better than keydown - use it instead
+function keyupTimeout(inputObj, func, timeout, clearIfEmpty){
+	inputObj.keyup(function(){
+		if(window.timeoutFunc)
+			clearTimeout(window.timeoutFunc);
+		timeoutFunc = setTimeout(
+			function(){
+				func();
+			},
+			timeout
+		);
+		if(clearIfEmpty){
+			if(inputObj.val().length === 0){
+				clearTimeout(timeoutFunc);
+			}
+		}
+	});
+}
+
 (function($){
     $.widget("test.lib",{
         options: {

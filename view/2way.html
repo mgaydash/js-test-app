@@ -23,12 +23,70 @@
 					"html"
 				);
 
-				var user = new User(123);
-				var boat = new User(124);
-				//user.set("name", "Wolfgang");
+				jQuery("body").test();
+
+				/*
+				var table = $(".table");
+				var row = table.find("tr").detach();
+				for(var i = 1; i < 10000; i++){
+					row.find("td:first").html("attr" + i);
+					//row.attr("data-bind-test", "attr" + i);
+					table.append(row.clone());
+				}
+				*/
+				//7264
+				//7213
+				//7193
+
+				/*
+				var table = $(".table").detach();
+				var row = table.find("tr").detach();
+				for(var i = 1; i < 10000; i++){
+					row.find("td:first").html("attr" + i);
+					//row.attr("data-bind-test", "attr" + i);
+					table.append(row.clone());
+				}
+				$("body").append(table);
+				*/
+				//6358
+				//6313
+				//6390
+
+				/*
+				var table = document.getElementById("table");
+				for(var i = 1; i < 10000; i++){
+					var tr = document.createElement("tr");
+					var td = document.createElement("td");
+					td.appendChild(document.createTextNode("test"));
+					tr.appendChild(td);
+					tr.appendChild(document.createElement("td"));
+					table.appendChild(tr);
+				}
+				*/
+				//1376
+				//1365
+				//1384
+				
+
+				
+				var table = document.getElementById("table");
+				var frag = document.createDocumentFragment();
+				for(var i = 1; i < 10000; i++){
+					var tr = document.createElement("tr");
+					var td = document.createElement("td");
+					td.appendChild(document.createTextNode("test"));
+					tr.appendChild(td);
+					tr.appendChild(document.createElement("td"));
+					frag.appendChild(tr);
+				}
+				table.appendChild(frag);
+				
+				//1220
+				//1220
+				//1235
 			});
 
-			function DataBinder(object_id) {
+			function dataBinder(object_id) {
 				var pubSub = jQuery({});
 				var data_attr = "bind-" + object_id,
 					message = object_id + ":change";
@@ -53,8 +111,9 @@
 				return pubSub;
 			}
 			
-			function User(uid) {
-				var binder = new DataBinder(uid),
+			function user(uid) {
+				var binder = new dataBinder(uid);
+
 				user = {
 					attributes: {},
 					set: function(attr_name, val) {
@@ -75,6 +134,48 @@
 
 				return user;
 			}
+
+			(function($){
+			    $.widget("test.test", {
+			        options: {
+			            _user: undefined,
+			            _obj1: {
+							attr1: "attribute1",
+							attr2: "attribute1",
+							attr3: "attribute1",
+							attr4: "attribute1",
+							attr5: "attribute1"
+						},
+						_obj2: {
+							attr1: "batman",
+							attr2: "robin",
+							attr3: "superman",
+							attr4: "auqaman",
+							attr5: "joker"
+						}
+			        },
+			        _create: function(){
+			            var that = this;
+			            var options = that.options;
+
+			            options._user = new user("test");
+			            $(".setObj1").click(function(){
+							that._setUser(options._obj1);
+						});
+
+						$(".setObj2").click(function(){
+							that._setUser(options._obj2);
+						});
+			        },
+			        _setUser: function (obj){
+						var that = this;
+						var options = that.options;
+
+						for(var attr in obj)
+							options._user.set(attr, obj[attr]);
+					},
+			    });
+			})(jQuery);
 		</script>
 		<style>
 
@@ -82,13 +183,13 @@
 	</head>
 	<body>
 		<h2 id="header">2 way binding</h2>
-
-		<input type="text" data-bind-123="name" />
-		<input type="text" data-bind-123="title" />
-		<input type="text" data-bind-124="name" />
-
-		<div data-bind-123="name" style="border:1px solid blue; height:20px; width:200px;"></div>
-		<div data-bind-123="title" style="border:1px solid blue; height:20px; width:200px;"></div>
-		<div data-bind-124="name" style="border:1px solid blue; height:20px; width:200px;"></div>
+		<button class="setObj1" type="button">set 1</button>
+		<button class="setObj2" type="button">set 2</button>
+		<table border="1" class="table" id="table" style="margin-top:10px;"> 
+			<tr>
+				<td>attr 1:</td>
+				<td data-bind-test="attr1" style="width:300px;"></td>
+			</tr>
+		</table>
 	</body>
 </html>
