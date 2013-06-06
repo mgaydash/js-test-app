@@ -15,13 +15,6 @@
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 				jQuery('body').prepend('<div id="nav"></div>');
-//				jQuery.get(
-//					"../view/nav.html", 
-//					function(response){
-//						jQuery("#nav").html(response);
-//					},
-//					"html"
-//				);
 				jQuery("#nav").load("../view/nav.html");
 				var tempDiv = jQuery("#testDiv0").clone();
 				tempDiv.removeAttr("id");
@@ -41,7 +34,7 @@
 			//########## ^^^^^^^ old ^^^^^^ ###########
 				
 			//jquery that essentially works the same way as css :hover
-			/*jQuery(".testDiv").hover(
+			jQuery(".testDiv").hover(
 				function(){
 					jQuery(this).css("background-color","yellow");
 				},
@@ -54,11 +47,10 @@
 				var rand = Math.floor(Math.random() * 16);
 				var col = "rgb(" + Math.floor(Math.random() * 257) + ", "+ Math.floor(Math.random() * 257) + ", "+ Math.floor(Math.random() * 257) + ")";
 				jQuery(testDivAr[rand]).css("background", col);
-			});*/
+			});
 			
 			spin(jQuery(".spinner2"), 90000);
 			spin(jQuery(".spinner3"), -90000);
-//			spin(jQuery(".testDiv"), -90000);
 			backgroundProc();
 		});
 		function addContextMenu(){
@@ -137,7 +129,6 @@
 		</style>
 	</head>
 	<body>
-		<marquee>
 		<div style="border:1px solid black; float:left; height:760px; width:650px;">
 			<h1>testbed</h1>
 			<div id="content">
@@ -179,6 +170,5 @@
 				<div style="background:blue; float:left; height:100px; margin-top:100px; width:100px;"></div>
 			</div>
 		</div>
-	</marquee>
 	</body>
 </html>

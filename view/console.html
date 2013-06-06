@@ -10,8 +10,9 @@
 		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
 		<link href="../css/test.css" rel="stylesheet" type="text/css" />
 		<title>
-			console
+			terminal
 		</title>
+		  
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 				jQuery('body').prepend('<div id="nav"></div>');
@@ -23,13 +24,13 @@
 					"html"
 				);
 
-				$(".console").console();
+				$(".terminal").terminal();
 			});
 
 			(function($){
-			    $.widget("test.console",{
+			    $.widget("test.terminal",{
 			        options: {
-			            _promptText: "Console $ "
+			            _promptText: "terminal $ "
 			        },
 			        _addEventListeners: function(){
 			        	var that = this;
@@ -141,7 +142,7 @@
 				background-color:black;
 				
 			}
-			.console{
+			.terminal{
 				background-color:black;
 				border:none;
 				color:green;
@@ -153,6 +154,6 @@
 		</style>
 	</head>
 	<body>
-		<textarea class="console"></textarea>
+		<textarea class="terminal"></textarea>
 	</body>
 </html>

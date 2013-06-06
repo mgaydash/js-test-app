@@ -6,6 +6,7 @@
 		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
 		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
 		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<script src="../js/boxSize.js" type="text/javascript"></script>
 		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
 		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
 		<link href="../css/test.css" rel="stylesheet" type="text/css" />
@@ -13,6 +14,8 @@
 			box sizing
 		</title>
 		<script type="text/javascript">
+			page = {};
+
 			jQuery(document).ready(function(){
 				jQuery('body').prepend('<div id="nav"></div>');
 				jQuery.get(
@@ -23,13 +26,32 @@
 					"html"
 				);
 
-				var o = ""
-				for(var i = 0; i < 50; i++){
-					o += "# ";
-					console.log(o);
-				}
+				page.sm = df.squareManager(".square");
+				page.sm.getCar().listVals();
 
+				$(document).keyup(function(e){
+					page.sm.addTemplate(String.fromCharCode(e.keyCode));
+				});
+				df.stepper(page.blink, 4000);
 			});
+
+			//a closure is created so the returned func alwasy has access to i
+			page.blink = function(){
+				var i = 0;
+				return function(){
+					console.log(i);
+					if($("body").css("background-color") === "rgb(255, 255, 255)"){
+						$("body").css("background-color", "#eeeeee");
+					}
+					else{
+						$("body").css("background-color", "white");
+					}
+					i++;
+					if(i < 10000)
+						return true;
+					return false;
+				};
+			}();
 		</script>
 		<style>
 			.box{
@@ -49,7 +71,7 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body style="background-color:white;">
 		<h2 id="header">Box Sizing</h2>
 
 		<div class="box cBox" style="background-color:#ff0000;">
@@ -74,5 +96,11 @@
 		<div class="box bBox" style="background-color:#000077; border:2px solid black; padding:4px;">
 			border
 		</div>
+
+		<div class="square" style="background-color:green; border:2px solid purple; left:300px; overflow:hidden; position:absolute; height:300px; top:150px; width:300px;">
+			<div class="template" style="background-color:red; float:left; font-size:30px; height:43px; padding:7px 0px 0px 10px; width:40px;"></div>
+		</div>
+
+		<!-- <embed src="../audio/hollaBack1.wav"> -->
 	</body>
 </html>
