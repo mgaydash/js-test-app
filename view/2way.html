@@ -25,6 +25,7 @@
 
 				jQuery("body").test();
 
+				//Times recorded are for appanding 10,000 rows
 				/*
 				var table = $(".table");
 				var row = table.find("tr").detach();
@@ -68,10 +69,10 @@
 				//1384
 				
 
-				
+				/*
 				var table = document.getElementById("table");
 				var frag = document.createDocumentFragment();
-				for(var i = 1; i < 10000; i++){
+				for(var i = 1; i < 10; i++){
 					var tr = document.createElement("tr");
 					var td = document.createElement("td");
 					td.appendChild(document.createTextNode("test"));
@@ -80,16 +81,16 @@
 					frag.appendChild(tr);
 				}
 				table.appendChild(frag);
-				
+				*/
 				//1220
 				//1220
 				//1235
 			});
 
-			function dataBinder(object_id) {
+			function dataBinder(objectId) {
 				var pubSub = jQuery({});
-				var data_attr = "bind-" + object_id,
-					message = object_id + ":change";
+				var data_attr = "bind-" + objectId,
+					message = objectId + ":change";
 
 				jQuery(document).on("keyup", "[data-" + data_attr + "]", function(evt) {
 					var $input = jQuery(this);
@@ -111,10 +112,10 @@
 				return pubSub;
 			}
 			
-			function user(uid) {
+			function obj(uid) {
 				var binder = new dataBinder(uid);
 
-				user = {
+				obj = {
 					attributes: {},
 					set: function(attr_name, val) {
 						this.attributes[ attr_name ] = val;
@@ -127,12 +128,12 @@
 				};
 
 				binder.on(uid + ":change", function(evt, attr_name, new_val, initiator) {
-					if (initiator !== user) {
-						user.set(attr_name, new_val);
+					if (initiator !== obj) {
+						obj.set(attr_name, new_val);
 					}
 				});
 
-				return user;
+				return obj;
 			}
 
 			(function($){
@@ -141,10 +142,10 @@
 			            _user: undefined,
 			            _obj1: {
 							attr1: "attribute1",
-							attr2: "attribute1",
-							attr3: "attribute1",
-							attr4: "attribute1",
-							attr5: "attribute1"
+							attr2: "attribute2",
+							attr3: "attribute3",
+							attr4: "attribute4",
+							attr5: "attribute5"
 						},
 						_obj2: {
 							attr1: "batman",
@@ -159,6 +160,7 @@
 			            var options = that.options;
 
 			            options._user = new user("test");
+			            
 			            $(".setObj1").click(function(){
 							that._setUser(options._obj1);
 						});
@@ -173,7 +175,7 @@
 
 						for(var attr in obj)
 							options._user.set(attr, obj[attr]);
-					},
+					}
 			    });
 			})(jQuery);
 		</script>
@@ -189,6 +191,22 @@
 			<tr>
 				<td>attr 1:</td>
 				<td data-bind-test="attr1" style="width:300px;"></td>
+			</tr>
+			<tr>
+				<td>attr 2:</td>
+				<td data-bind-test="attr2" style="width:300px;"></td>
+			</tr>
+			<tr>
+				<td>attr 3:</td>
+				<td data-bind-test="attr3" style="width:300px;"></td>
+			</tr>
+			<tr>
+				<td>attr 4:</td>
+				<td data-bind-test="attr4" style="width:300px;"></td>
+			</tr>
+			<tr>
+				<td>attr 5:</td>
+				<td data-bind-test="attr5" style="width:300px;"></td>
 			</tr>
 		</table>
 	</body>

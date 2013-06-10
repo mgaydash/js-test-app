@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+
+		<script src="../js/woCal/async.js" type="text/javascript"></script>
+		<script src="../js/woCal/mapper.js" type="text/javascript"></script>
+
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			wo cal test
+		</title>
+		<script type="text/javascript">
+			window.lib = window.lib || {};
+			window.df = window.df || {};
+
+			jQuery(document).ready(function(){
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+				df.woCal = lib.woCal();
+			});
+
+			lib.woCal = function(){
+				var that = {}
+				var async = lib.async();
+				var mapper = lib.mapper();
+				
+				// # # # # # # Private Methods # # # # # # \\
+				var bindEventHandlers = function(){
+					elements.testDiv1.click(function(){ //This method needs to be made public and this binding move out of the widget.
+						setRandomColor();
+						elements.testDiv1.set("djdjd");
+					});
+					elements.btnSave.click(function(){
+						console.log(map);
+					});
+					elements.btnOpenWo.click(function(){
+						console.log(values);
+					});
+					elements.btnCancel.click(function(){
+						elements.inputStartDate.set("hey");
+						elements.body.set("hey");
+						console.log(values);
+					});
+				};
+				var setRandomColor = function(){
+					var col = "#" + numberTo2Digits(generateRandHexByte()) + numberTo2Digits(generateRandHexByte()) + numberTo2Digits(generateRandHexByte());
+					elements.body.css("background-color", col);
+				};
+				var numberTo2Digits = function(num){
+					return("0" + num).slice(-2); //concat a 0 take the last 2 chars
+				};
+				var generateRandHexByte = function(){
+					return Math.floor(Math.random() * 256).toString(16);
+				};
+
+				// # # # # # # Public Methods # # # # # # \\
+				that.alertSomeStuff = function(){
+					alert(async.ajaxCall());
+				};
+
+				//constructor
+				var map = {
+					body: 			{bind: true,							selector: "body"},
+					btnCancel: 		{										selector: ".df_editWorkDateForm_cancel"},
+					btnOpenWo: 		{										selector: ".df_editWorkDateForm_openWo"},
+					btnSave: 		{										selector: ".df_editWorkDateForm_save"},
+					testDiv1: 		{bind: true, 							selector: ".testDiv1"},
+					testDiv2: 		{										selector: ".testDiv2"},
+					inputStartDate: {bind: true,							selector: ".df_editWoDate_sd"},
+					selectForeman: 	{bind: true,							selector: ".df_editWoDateForm_foreman"},
+					inputEndDate: 	{bind: true,	jsonKey: "endDate",		selector: ".df_editWoDate_ed"}
+				};
+				var elements = {};
+				var values = {};
+
+				mapper.processMap(map, elements, values, $(document));
+				bindEventHandlers();
+				return that;
+			}
+		</script>
+		<style>
+
+		</style>
+	</head>
+	<body>
+		<div class="testDiv1" style="background-color:red; border:1px solid black; height:100px; margin-bottom:10px; width:100px;"></div>
+		<div class="testDiv2" style="background-color:blue; border:1px solid black; height:100px; margin-bottom:10px; width:100px;"></div>
+
+		<div class="df_editWoDateForm" style="background-color:#c7c7c7; border:2px solid black; border-radius:10px; font-family:arial, sans-serif; font-size:13px; height:250px; width:500px;">
+			<div class="df_editWoDateForm_title" style="background-color:#888888; border-bottom:1px solid black; border-top-left-radius:8px; border-top-right-radius:8px; font-size:18px; padding:0px 0px 0px 15px;">Edit Work Order Date</div>
+			<table style="border:0px solid black; margin:2px 0px 0px 19px;">
+				<tbody>
+					<tr style="height:28px;">
+						<td style="text-align:right;">
+							Start Date:
+						</td>
+						<td style="padding:0px 0px 0px 10px;">
+							<input class="df_editWoDate_sd" style="border:1px solid black; height:18px; left:0px; margin:0px; padding:1px; width:70px;" type="text"/>
+						</td>
+					</tr>
+					<tr style="height:28px;">
+						<td style="text-align:right;">
+							End Date:
+						</td>
+						<td style="padding:0px 0px 0px 10px;">
+							<input class="df_editWoDate_ed" style="border:1px solid black; height:18px; left:0px; margin:0px; padding:1px; width:70px;"	 type="text"/>
+						</td>
+					</tr>
+					<tr style="height:28px;">
+						<td style="text-align:right;">
+							Foreman:
+						</td>
+						<td style="padding:0px 0px 0px 10px;">
+							<select class="df_editWoDateForm_foreman" style="border:1px solid black; height:22px; margin:0px; min-width:100px; padding:1px;">
+								<option>test1</option>
+								<option>test2</option>
+								<option>test3</option>
+							</select>
+						</td>
+					</tr>
+					<tr style="height:28px;">
+						<td style="text-align:right;">
+							Work Name:
+						</td>
+						<td style="padding:0px 0px 0px 10px;">
+							<div class="df_editWoDateForm_workName" style="border:1px solid black; height:20px; width:369px;"></div>
+						</td>
+					</tr>
+					<tr style="height:28px;">
+						<td style="text-align:right;">
+							Description:
+						</td>
+						<td style="padding:0px 0px 0px 10px;">
+							<textarea class="df_editWoDateForm_description" style="border:1px solid black; height:50px; resize:none; width:368px;"></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div style="margin:10px 0px 0px 0px;">
+				<button class="df_editWorkDateForm_cancel" style="margin:0px 0px 0px 16px;" type="button">Cancel</button>
+				<button class="df_editWorkDateForm_save" type="button">Save</button>
+				<button class="df_editWorkDateForm_openWo" style="float:right; margin:0px 16px 0px 0px;" type="button">Open WO</button>
+			</div>
+		</div>
+	</body>
+</html>
