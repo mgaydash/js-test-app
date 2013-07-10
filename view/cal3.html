@@ -61,7 +61,7 @@
 				$(".modalFrame").hide();
 				*/
 
-
+				
 				var ar = [];
 				var f = function(item){
 					$("body").append(item + " ");
@@ -70,53 +70,66 @@
 					ar.push(i);
 				}
 
-				
-
 				$(".modalFrame").show().offset();
 				defer(ar, f).done(function(){
 					$(".modalFrame").hide();
 				});
+
+				$("body").widg();
 			});
 
 			(function($){
-			    $.widget("namespace.widgetName",{
+			    $.widget("test.widg",{
 			        options: {
 			            
 			        },
 			        _create: function(){
-			            
+			        	this.options.body = $("body");
+
+			            var ar = [];
+						var f = function(item){
+							this.options.body.append("<span style='color:red;'>" + item + " </span>");
+						};
+						for(var i = 0; i < 1000; i++){
+							ar.push(i);
+						}
+
+						$(".modalFrame").show().offset();
+						defer(ar, f, this).done(function(){
+							$(".modalFrame").hide();
+						});
 			        }
 			    });
 			})(jQuery);
 
-			var defer = function(array, callback){
-					var ctx = this;
-					var d = new $.Deferred();
-					var item;
+			var defer = function(array, callback, ctx){
+				console.log(arguments);
+				var d = new $.Deferred();
+				var item;
 
-					(function proc(){
-						var item;
-						if(array.shift) 
-							item = array.shift();
-						else {
-							item = array.get(0);
-							array.splice(0,1);
-						}
-						if(item !==  undefined){
-							setTimeout(
-								function(){
-									callback.call(ctx, item);
-									proc(array, callback);
-								},
-								0
-							);
-						}
-						else{
-							d.resolve();
-						}
-					})();					
-					return d;
-				};
+				(function proc(){
+					var item;
+					if(array.shift) 
+						item = array.shift();
+					else {
+						item = array.get(0);
+						array.splice(0,1);
+					}
+					if(item !==  undefined){
+						setTimeout(
+							function(){
+								callback.call(ctx, item);
+								proc(array, callback);
+							},
+							0
+						);
+					}
+					else{
+						d.resolve();
+					}
+				})();					
+				return d;
+			};
 
 			delayForEach = function(array, func, context, duration){
 				setTimeout(
