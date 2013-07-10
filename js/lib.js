@@ -1,3 +1,25 @@
+Date.prototype.toDfString = function(){
+	// return this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds() + "." + this.getMilliseconds();
+	return  (this.getMonth() + 1) + "/" + this.getDate() + "/" + this.getFullYear()  + " " + this.getHours() + ":" + this.getMinutes() + ":" + this.getSeconds() + "." + this.getMilliseconds();
+};
+Date.prototype.fromDfString = function(s){
+	var month, day, year, hour, min, sec, ms;
+	month = s.slice(0, s.indexOf("/"));
+	s = s.slice(s.indexOf("/") + 1);
+	day = s.slice(0, s.indexOf("/"));
+	s = s.slice(s.indexOf("/") + 1);
+	year = s.slice(0, s.indexOf(" "));
+	s = s.slice(s.indexOf(" ") + 1);
+	hour = s.slice(0, s.indexOf(":"));
+	s = s.slice(s.indexOf(":") + 1);
+	min = s.slice(0, s.indexOf(":"));
+	s = s.slice(s.indexOf(":") + 1);
+	sec = s.slice(0, s.indexOf("."));
+	s = s.slice(s.indexOf(".") + 1);
+	ms = s;
+	return new Date(year, month - 1, day, hour, min, sec, ms);
+};
+
 (function($){
     $.widget("namespace.widgetName",{
         options: {

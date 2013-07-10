@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/tutorial.js" type="text/javascript"></script>
+                <script src="../js/ee.js" type="text/javascript"></script>
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+                <center><h1>Element Cloning</h1></center>
+		<p>
+			&nbsp;&nbsp;&nbsp;&nbsp;In this example we will see how we can take one element and clone it to produce several, and tie a widget to each one of them.
+                        when you click the "Initialize Widgets" button the blue box will be removed and cloned. Then a for loop will append clones of that 
+                        element to the container div below. Each element will have their own widget tied to them, the widget is very simple for demonstration
+                        purposes. The widget counts the number of times that the user clicks the div. Notice how each widget will keep track of its own count
+                        even though they are all using the same widget they all have different instances of it.
+		</p>
+		<button id="widgetize" >Initialize Widgets</button><br/>
+		<div id="clickCountExample" style="height:105px;width:100%">
+                    <div class="container" style="background-color:blue;margin:5px;float:left;height:100px;width:100px">
+                        <div class="textDiv" style="position:absolute;font-size:30px;color:white;"></div>
+                    </div>
+		</div>
+		<br/>
+                <center><h1>Event Communication</h1></center>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;In this example we have 3 &lt;div&gt;'s each with a widget called "colorSquareWidget" tied to them that when clicked
+                    will choose a random color between red,orange,yellow,green,and blue. The first &lt;div&gt; containing text, has a widget tied to it called 
+                    "colorCountWidget". Each 'colorSquareWidget' is bound to the "Communicate" button below that when clicked will trigger an event called "communicate"
+                    and  pass it's current background-color. The colorCountWidget is subscirbed to this "communicate" event and changes its local count variables 
+                    depending on which colors are passed. With this form of coding we can remove/add as many &lt;div&gt;'s with the "colorSquareWidget" tied to them
+                    as we please and the code will remain functional.
+                </p>
+                <button id="commButton">Communicate</button><br/>
+                <div id="commExample" style="height:105px;width:100%">
+                    <div class="colorCount" style="height:100px;width:100px;float:left;margin:5px;">
+                        <div style="display:block">  Red: <span class="red">0</span></div>
+                        <div style="display:block"> Orange: <span class="orange">0</span></div>
+                        <div style="display:block">Yellow: <span class="yellow">0</span></div>
+                        <div style="display:block">Green: <span class="green">0</span></div>
+                        <div style="display:block">Blue: <span class="blue">0</span></div>
+                    </div>
+
+                    <div class="colorSquare" style="height:100px;width:100px;float:left;margin:5px;"></div>
+                    <div class="colorSquare" style="height:100px;width:100px;float:left;margin:5px;"></div>
+                    <div class="colorSquare" style="height:100px;width:100px;float:left;margin:5px;"></div>
+                    <div class="colorSquare" style="height:100px;width:100px;float:left;margin:5px;"></div>
+                    <div class="colorSquare" style="height:100px;width:100px;float:left;margin:5px;"></div>
+                </div>
+                <br/>
+                <center><h1>Debugging</h1></center>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;
+                    jQuery UI widgets are very debugger friendly! The following example below has a bug in it! We are going to review debugging in the browser for those who are not familiar
+                    with doing so. Firefox has a very good debugger that you can download called Firebug. You can go to addons and search for firebug and install it. Chrome comes
+                    with a built in debugger tool. To open up the debugger in these browsers hit the F12 key. In Chrome you will want to select the "Sources" tab, and in firebug you will want to 
+                    select the "Scripts" tab. You will need to select the tutorial.js file, in firebug there is a dropdown menu with all the files, and in chrome there is an arrow in the top left corner
+                    of the developer tools window that will expand to show all the files. Follow the steps below to fix the problem.
+                
+                </p>
+                <button id="equateButton" style="float:left">Equate</button>
+                <button id="newEquation" style="float:left">New Equation</button>
+                <button id="changeOperation" style="float:left">Change Operation</button><br/><br/>
+                <div id="debugContainer" style="height:50px;width:100%">
+                    <div id="leftValue" style="float:left;font-size:40px;margin-left:10px;">0</div>
+                    <div id="operation" style="float:left;font-size:40px;margin-left:10px;">+</div>
+                    <div id="rightValue" style="float:left;font-size:40px;margin-left:10px;">0</div>
+                    <div style="float:left;font-size:40px;margin-left:10px;">=</div>
+                    <div id="result" style="float:left;font-size:40px;margin-left:10px;">?</div>
+                </div>
+                <ul>
+                    <li>First lets check out the equate function on line 249. (To set a break point move cursor to the left side of the developer tools window, and click on the number 249)
+                        To step through the code use the F10 key to "step over" lines of code.
+                    </li>
+                    <li>Hit the F10 key twice so the arrow is on line 251. Notice how you can mouse over variables to see what is contained inside, this can be extremely useful when debugging.</li>
+                    <li>Now continue to step through the code until you're within the switch statement in the code. Move your mouse over the "leftValue" variable, notice how the value shown does
+                        not match the one displayed in the application.
+                    </li>
+                    <li>If you look through the rest of the function the leftValue is never set within this function, so we need to find where this "leftValue" variable is being miscalculated.</li>
+                    <li>Now lets take out the break point on line 249 by clicking the breakpoint, and put a new breakpoint at line 214 within the newEquation function, and refresh the page. </li>
+                    <li>Now step through the code until you reach line 218.... notice anything weird??!?!? Some dummy put in a -35 when displaying the leftValue!!!</li>
+                    <li>Open the tutorial.js file in an editor and change line 218 from "options.gui.find("#leftValue").text(options.leftValue-35);" to "options.gui.find("#leftValue").text(options.leftValue);"</li>
+                    <li>Close the developer tools and refresh the page, all should be fixed!</li>
+                </ul>
+                <br/>
+                Now that you have seen the following examples, feel free to make a local copy of this Intern_Tutorial folder and manipulate the code and become familiar with the syntax, and the way these widgets behave.
+                Remember for more information on widgets <a href="http://msdn.microsoft.com/en-us/library/hh404085.aspx" target="_blank">this link</a> is very useful, if you need javascript help 
+                <a href="http://www.w3schools.com/js/default.asp" target="_blank">this link</a> is very useful and if you need a more extensive tutorial on debugging 
+                <a href="http://www.w3resource.com/web-development-tools/firebug-tutorials.php" target="_blank">this link</a> is great.
+                
+	</body>
+</html>      

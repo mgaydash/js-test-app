@@ -30,6 +30,9 @@
 					"html"
 				);
 				df.woCal = lib.woCal();
+				$("body").click(function(){
+					df.woCal.setRandomColor(this);
+				});
 			});
 
 			lib.woCal = function(){
@@ -39,25 +42,16 @@
 				
 				// # # # # # # Private Methods # # # # # # \\
 				var bindEventHandlers = function(){
-					elements.testDiv1.click(function(){ //This method needs to be made public and this binding move out of the widget.
-						setRandomColor();
-						elements.testDiv1.set("djdjd");
-					});
 					elements.btnSave.click(function(){
 						console.log(map);
 					});
 					elements.btnOpenWo.click(function(){
 						console.log(values);
+						console.log(values.selectForeman)
 					});
 					elements.btnCancel.click(function(){
 						elements.inputStartDate.set("hey");
-						elements.body.set("hey");
-						console.log(values);
 					});
-				};
-				var setRandomColor = function(){
-					var col = "#" + numberTo2Digits(generateRandHexByte()) + numberTo2Digits(generateRandHexByte()) + numberTo2Digits(generateRandHexByte());
-					elements.body.css("background-color", col);
 				};
 				var numberTo2Digits = function(num){
 					return("0" + num).slice(-2); //concat a 0 take the last 2 chars
@@ -70,10 +64,14 @@
 				that.alertSomeStuff = function(){
 					alert(async.ajaxCall());
 				};
+				that.setRandomColor = function(selector){
+					var col = "#" + numberTo2Digits(generateRandHexByte()) + numberTo2Digits(generateRandHexByte()) + numberTo2Digits(generateRandHexByte());
+					$(selector).css("background-color", col);
+				};
 
 				//constructor
 				var map = {
-					body: 			{bind: true,							selector: "body"},
+					body: 			{bind: false,							selector: "body"},
 					btnCancel: 		{										selector: ".df_editWorkDateForm_cancel"},
 					btnOpenWo: 		{										selector: ".df_editWorkDateForm_openWo"},
 					btnSave: 		{										selector: ".df_editWorkDateForm_save"},

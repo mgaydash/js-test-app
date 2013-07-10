@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			cal
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){;
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+
+				$(".modalFrame").click(function(){
+					$(".modalFrame").hide();
+				});
+
+				/*
+				$(".modalFrame").show().offset();
+				(function(){
+					var d = new $.Deferred()
+					setTimeout(
+						function(){
+							for(var i = 0; i < 10000; i++){
+								$("body").append("/ ");
+								if(i % 100 === 0)
+									$("body").append("\n");
+							}
+							d.resolve();
+						},
+						10
+					);
+					return d;
+				})().done(function(){
+					$(".modalFrame").hide();
+				});
+				*/
+
+				/*
+				$(".modalFrame").show().offset();
+				var ar = [];
+				var f = function(item){
+					console.log(item);
+				};
+				for(var i = 0; i < 1000; i++){
+					ar.push(i);
+				}
+				delayForEach(ar, f, this, 13);
+				$(".modalFrame").hide();
+				*/
+
+
+				var ar = [];
+				var f = function(item){
+					$("body").append(item + " ");
+				};
+				for(var i = 0; i < 1000; i++){
+					ar.push(i);
+				}
+
+				
+
+				$(".modalFrame").show().offset();
+				defer(ar, f).done(function(){
+					$(".modalFrame").hide();
+				});
+			});
+
+			(function($){
+			    $.widget("namespace.widgetName",{
+			        options: {
+			            
+			        },
+			        _create: function(){
+			            
+			        }
+			    });
+			})(jQuery);
+
+			var defer = function(array, callback){
+					var ctx = this;
+					var d = new $.Deferred();
+					var item;
+
+					(function proc(){
+						var item;
+						if(array.shift) 
+							item = array.shift();
+						else {
+							item = array.get(0);
+							array.splice(0,1);
+						}
+						if(item !==  undefined){
+							setTimeout(
+								function(){
+									callback.call(ctx, item);
+									proc(array, callback);
+								},
+								0
+							);
+						}
+						else{
+							d.resolve();
+						}
+					})();					
+					return d;
+				};
+
+			delayForEach = function(array, func, context, duration){
+				setTimeout(
+					function(){
+						if(array.length > 0) {
+							var item;
+							if(array.shift) 
+								item = array.shift();
+							else {
+								// VAM: jQuery set
+								item = array.get(0);
+								array.splice(0,1);
+							}
+
+							func.call(context, item);
+							setTimeout(arguments.callee, 0);
+						}
+					}, 
+					duration
+				);
+			}
+		</script>
+		<style type="text/css">
+
+		</style>
+	</head>
+	<body>
+		<div style="border:2px solid black; height:200px; position:relative; width:400px;">
+			<div style="background-color:red; border:1px solid black; height:13px; left:22px; position:absolute; transform:rotate(45deg); top:33px; width:13px;"></div>
+			<div style="background-color:red; border-top:1px solid black; border-bottom:1px solid black; height:19px; left:30px; position:absolute; top:30px; width:200px;"></div>
+
+			<div style="background-color:red; height:14px; left:53px; position:absolute; transform:rotate(45deg); top:63px; width:14px;"></div>
+			<div style="background-color:red; height:20px; left:60px; position:absolute; top:60px; width:200px;"></div>
+
+			<iframe class="modalFrame" src="../frag/loading.html" style="border:none; display:none; height:100%; left:0px; position:fixed; top:0px; width:100%; z-index:1000;"></iframe>
+			<div class="modalFrame" style="height:100%; display:none; left:0px; position:fixed; top:0px; width:100%; z-index:1001;"></div>
+		</div>
+	</body>
+</html>

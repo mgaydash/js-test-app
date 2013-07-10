@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <script>
+            jQuery(document).ready(function(){
+                jQuery("#modalDiv").show();
+                //This part takes up to a few seconds to execute and blocks the browser
+                for(var i = 0; i < 10000; i++){
+                    console.log("doing something");
+                }
+                jQuery("#modalDiv").hide();
+            });
+        </script>
+        <style>
+            #modalDiv{
+                background-color:red;
+                height:100px;
+                width:100px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="modalDiv"></div>
+    </body>
+</html>

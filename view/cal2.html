@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			cal
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){;
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+			});
+		</script>
+		<style>
+			.calTable{
+				border: 2px solid black;
+				border-spacing:0px;
+				border-collapse:collapse;
+				width:100%;
+			}
+			.calTable thead{
+				background:#dddddd;
+				border-bottom:2px solid black;
+			}
+
+			.dayBottom{
+				height:100px;
+				width:100%;
+			}
+
+			.dayCell{
+				border-left:1px solid black;
+				padding:0px;
+				width:14.2%;
+			}
+			.dayCell:first-child {
+				border-left:none;
+			}
+
+			.dayHead{
+				border-left:1px solid black;
+			}
+			.dayHead:first-child{
+				border-left:none;
+			}
+
+			.dayTop{
+				background-color:#dddddd;
+				border-bottom:1px solid black;
+				height:20px;
+				width:100%;
+			}  
+
+			.weekRow{
+				border-bottom:1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>cal2</h1>
+		<table class="calTable">
+			<colgroup span="1" style="background:#ddddff"></colgroup>
+			<colgroup span="5"></colgroup>
+			<colgroup span="1" style="background:#ddddff"></colgroup>
+			<thead style="background:white;">
+				<tr>
+					<th class="dayHead">Sunday</th>
+					<th class="dayHead">Monday</th>
+					<th class="dayHead">Tuesday</th>
+					<th class="dayHead">Wednesday</th>
+					<th class="dayHead">Thursday</th>
+					<th class="dayHead">Friday</th>
+					<th class="dayHead">Saturday</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="weekRow">
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+					<td class="dayCell">
+						<div class="dayTop"></div>
+						<div class="dayBottom"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
