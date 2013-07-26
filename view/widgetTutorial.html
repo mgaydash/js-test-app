@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			widget tutoriAL
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){;
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+
+				var todo = lib.todo("body");
+			});
+
+			window.lib = window.lib || {};
+
+			lib.todo = function(selector){
+				var that = {}; //"that" is the object that represents our public interface, so we want to attach all of our public methods to it
+
+				var elemObj = $(selector);
+
+				var elements = {}; //setup an object to hold our element references
+
+				//selectors
+				var btnAddTodo = 	".df_todo_btnAdd";
+				var tblTodo = 		".df_todo_tbl";
+
+				var trTblTodo = 	".df_todo_tblRow";
+				var tdTitle = 		".df_todo_tblRow_title";
+				var tdInfo = 		".df_todo_tblRow_info";
+
+				//element objects
+				var pageTitle = undefined;
+
+				// # # # # # # Private Methods # # # # # # \\
+				var bindEventHandlers = function(){
+					elements.btnAddTodo.click(function(){
+						elements.tblTodo.append(elements.trTblTodo.clone());
+					});
+				};
+
+				var createElementObjectsFromTemplate = function(){
+					elements.btnAddTodo = elemObj.find(btnAddTodo);
+					elements.tblTodo = elemObj.find(tblTodo);
+					elements.trTblTodo = elemObj.find(trTblTodo).detach();
+				};
+
+				// # # # # # # Public Methods # # # # # # \\
+
+				//Constructor
+				createElementObjectsFromTemplate();
+				bindEventHandlers();
+				return that;
+			};
+		</script>
+	</head>
+	<body>
+		<h1>widget tutoriAL</h1>
+
+		todo:
+		<button class="df_todo_btnAdd">Add</button>
+		<table border="1" class="df_todo_tbl">
+			<tr class="df_todo_tblRow">
+				<td class="df_todo_tblRow_title" style="font-weight:bold;">TITLE</td>
+				<td class="df_todo_tblRow_info">DESCRIPTION</td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<title>
+			submit hours
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+
+				
+
+				$("body").click(function(){
+					submitHours();
+				});
+			});
+			var submitHours = function(){
+				var data = {
+					ev_oldlocaltimezoneid:"America/New_York",
+					init_display_text: "",
+					msg: "",
+					pg: "create",
+					participant_root: "",
+					participant_user: 77,
+					ev_type_list_id: 1447,
+					ev_subtype_list_id: "",
+					ev_subject: "Mitch Gaydash",
+					ev_status: "Confirmed",
+					ev_priority: "Normal",
+					ev_localstartdate: "07/17/2013",
+					ev_localstartdate_mm: 07,
+					ev_localstartdate_dd: 17,
+					ev_localstartdate_yyyy: 2013,
+					ev_localstarttime: "09:00",
+					ev_localstarttime_hr12: 09,
+					ev_localstarttime_min: 00,
+					ev_localstarttime_ampm: "am",
+					ev_localenddate: "07/17/2013",
+					ev_localenddate_mm: 07,
+					ev_localenddate_dd: 17,
+					ev_localenddate_yyyy: 2013,
+					ev_localendtime: "17:00",
+					ev_localendtime_hr12: 05,
+					ev_localendtime_min: 00,
+					ev_localendtime_ampm: "pm",
+					ev_localtimezoneid: "America/New_York",
+					ev_description: "",
+					evp_comments: "",
+					ev_ignoreconflicts: "yes",
+					lock_key_id: ""
+				};
+
+				$.ajax({
+					data: data,
+					type: "POST",
+					url: "https://prrs1.dataforma.com/dflowslope/event_file.jsp"
+				});
+			};
+		</script>
+		<style>
+		</style>
+	</head>
+	<body>
+		<h1>Submit Hours</h1>
+	</body>
+</html>

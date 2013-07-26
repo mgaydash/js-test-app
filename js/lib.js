@@ -30,6 +30,17 @@ Date.prototype.fromDfString = function(s){
         }
     });
 })(jQuery);
+
+var obj = function(){
+	var that = {}; //We attach functions to "that" to define our public interface.
+
+	// # # # # # # Private Methods # # # # # # \\
+
+	// # # # # # # Public Methods # # # # # # \\
+
+	// # # # # # # Constructor # # # # # # \\
+	return that;
+};
    
 function keydownTimeout(inputObj, func, timeout, clearIfEmpty){
 	inputObj.keydown(function(){
