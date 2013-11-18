@@ -22,6 +22,21 @@
 					},
 					"html"
 				);
+
+				$(".handle").mousedown(function(e){
+					var delta;
+					var parent = $(this).parent();
+					var origHeight = parent.height();
+					$(document).mousemove(function(ev){
+						if(ev.pageY > e.pageY + 5 || ev.pageY < e.pageY - 5){
+							delta = ev.pageY - e.pageY;
+							parent.css("height", origHeight + delta + "px");
+						}
+					}).mouseup(function(){
+						$(this).off("mousemove");
+						$(this).off("mouseup");
+					});
+				});
 			});
 		</script>
 		<style>
@@ -67,9 +82,18 @@
 			.weekRow{
 				border-bottom:1px solid black;
 			}
+
+		/*<!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # -->*/
+			.handle{
+				cursor:s-resize;
+			}
+			.resizeme{
+				min-height:16px;
+			}
 		</style>
 	</head>
-	<body>
+	<body style="background-color:purple;">
+		<div style="border:2px solid green; height:200px; width:200px;"></div>
 		<h1>cal2</h1>
 		<table class="calTable">
 			<colgroup span="1" style="background:#ddddff"></colgroup>
@@ -119,5 +143,11 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # -->
+
+		<div class="resizeme" style="border:1px solid black; height:200px; position:relative; width:200px;">
+			<div class="handle" style="background-color:red; bottom:0px; height:10px; position:absolute; width:200px;"></div>	
+		</div>
 	</body>
 </html>
