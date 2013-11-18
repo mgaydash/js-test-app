@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			2D Ar
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){;
+				jQuery('body').prepend('<div id="nav"></div>');
+				jQuery.get(
+					"../view/nav.html", 
+					function(response){
+						jQuery("#nav").html(response);
+					},
+					"html"
+				);
+
+				var workerAr = [];
+				var htmlAr = [];
+				var num = 46;
+				for(var i = 0; i < num; i++){
+					workerAr[i] = new Worker("../js/worker.js");
+					workerAr[i].postMessage(i);
+					workerAr[i].onmessage = function(event){
+						$("body").append($(bufToStr(event.data)));
+					};
+				}
+				console.log("loop done");
+			});
+
+			var bufToStr = function(buf){
+		   		return String.fromCharCode.apply(null, new Uint16Array(buf));
+		    }
+		</script>
+	</head>
+	<body>
+		<img src="../images/spinner.gif" style="margin-left:auto; margin-right:auto;">
+	</body>
+</html>
