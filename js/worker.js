@@ -9,7 +9,7 @@ strToBuf = function(str){
 this.onmessage = function(event){
 	var i,
 		html = "",
-		num = 1000;
+		num = 100;
 
 	html += "<div style='float:left; margin-right:10px;'>";
 
