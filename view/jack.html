@@ -6,14 +6,14 @@
 		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
 		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
 		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<script src="../js/menubuilder.js" type="text/javascript"></script>
 		<link href="../css/test.css" rel="stylesheet" type="text/css" />
 		<title>
 			testbed
 		</title>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
-				jQuery('body').prepend('<div id="nav"></div>');
-				jQuery("#nav").load("../view/nav.html");
+				menubuilder();
 
 				var div = $(".div").detach();
 				var bod = $("body");
