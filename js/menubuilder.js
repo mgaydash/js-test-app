@@ -73,7 +73,7 @@ var menubuilder = function(){
 		"display": "none",
 		"font-family": "Arial, sans-serif",
 		"left": "0px",
-		"padding": "0px 0px 5px 0px",
+		"padding": "0px 0px 5px 5px",
 		"position": "fixed",
 		"top": "0px",
 		"width": "100%",
