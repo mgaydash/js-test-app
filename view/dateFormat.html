@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+		<script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<script src="../js/menubuilder.js" type="text/javascript"></script>
+		<link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+		<link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			simple date format
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){;
+				menubuilder();
+
+				var date = new Date(2013, 0, 0);
+				var formatter = lib.simpleDateFormat("EEEE, MMMM d, yyyy - h:mm:ss a");
+
+				for(var i = 0; i < 365; i++){
+					date.setDate(date.getDate() + 1);
+					console.log(formatter.format(date));
+				}
+			});
+
+			window.lib = window.lib || {};
+
+			lib.simpleDateFormat = function(pattern){
+				var that = {};
+
+				// # # # # # # Private Methods # # # # # # \\
+				var prependZeroToOneDigitStr = function(str){
+			        return (str.length === 1) ? "0" + str : str;
+			    };
+
+			    var get12HrTimeFromDate = function(date){
+			    	var hours = date.getHours();
+			        if(hours == 0)
+			            hours = 12;
+			        return (hours > 12) ? hours - 12 : hours;
+			    };
+
+			    var getAmPmFromDate = function(date){
+			        return (date.getHours() >= 12) ? "PM" : "AM";
+			    };
+
+			    var getDowFromDate = function(date){
+			        return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][date.getDay()];;
+			    };
+
+			    var getDowAbbrevFromDate = function(date){
+			        return ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"][date.getDay()];;
+			    };
+
+			    var getDowLetterFromDate = function(date){
+			        return ["S", "M", "T", "W", "R", "F", "S"][date.getDay()];;
+			    };
+
+			    var getMonthFromDate = function(date){
+			        return ["January", "February", "$arch", "April", "$ay", "June", "July", "August", "September", "October", "November", "December"][date.getMonth()];
+			    };
+
+			    var getMonthAbbrevFromDate = function(date){
+			        return ["Jan", "Feb", "$ar", "Apr", "$ay", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"][date.getMonth()];
+			    };
+
+				// # # # # # # Public Methods # # # # # # \\
+				that.applyPattern = function(newPattern){
+					pattern = newPattern;
+				}
+
+				that.format = function(date){
+					var dateStr = pattern;
+
+					//only add numbers to dateStr
+					//replace year
+			    	dateStr = dateStr.replace(/yyyy/g, date.getFullYear());
+			    	dateStr = dateStr.replace(/yyy/g, date.getFullYear());
+			    	dateStr = dateStr.replace(/yy/g, ("" + date.getFullYear()).substring(2));
+
+			    	//replace day
+			    	dateStr = dateStr.replace(/dd/g, prependZeroToOneDigitStr("" + (date.getDate())));
+			    	dateStr = dateStr.replace(/d/g, date.getDate());
+
+			    	//replace hour 24
+			    	dateStr = dateStr.replace(/HH/g, prependZeroToOneDigitStr("" + date.getHours()));
+			    	dateStr = dateStr.replace(/H/g, date.getHours());
+
+			    	//replace hour 12
+			    	dateStr = dateStr.replace(/hh/g, prependZeroToOneDigitStr("" + get12HrTimeFromDate(date)));
+			    	dateStr = dateStr.replace(/h/g, get12HrTimeFromDate(date));
+
+			    	//replace minute
+			    	dateStr = dateStr.replace(/mm/g, prependZeroToOneDigitStr("" + date.getMinutes()));
+
+			    	//replace second
+			    	dateStr = dateStr.replace(/ss/g, prependZeroToOneDigitStr("" + date.getSeconds()));
+
+			    	//adds numbers or letters
+			    	//replace month
+			    	dateStr = dateStr.replace(/MMMM/g, getMonthFromDate(date));
+			    	dateStr = dateStr.replace(/MMM/g, getMonthAbbrevFromDate(date));
+			    	dateStr = dateStr.replace(/MM/g, prependZeroToOneDigitStr("" + (date.getMonth() + 1)));
+			    	dateStr = dateStr.replace(/M/g, date.getMonth() + 1);
+
+			    	//replace am/pm
+			    	if(dateStr.indexOf("a") === 0){
+			    		dateStr = dateStr.replace("a", getAmPmFromDate(date));
+			    	}
+			    	dateStr = dateStr.replace(/ a/g, " " + getAmPmFromDate(date));
+
+			    	//replace week
+			    	dateStr = dateStr.replace(/EEEE/g, getDowFromDate(date));
+			    	dateStr = dateStr.replace(/EEE/g, getDowAbbrevFromDate(date));
+			    	dateStr = dateStr.replace(/EE/g, getDowLetterFromDate(date));
+			    	dateStr = dateStr.replace(/E/g, getDowLetterFromDate(date));
+
+			    	dateStr = dateStr.replace(/\$/g, "M"); //Little work-around since month replace can replace M in March and May
+
+			    	return dateStr;
+				};
+
+				return that;
+			};
+		</script>
+	</head>
+	<body>
+		Check console...
+	</body>
+</html>

@@ -20,7 +20,8 @@ var menubuilder = function(){
 		["../view/cal3.html",		 	"cal3"],
 		["../view/2dar.html",		 	"2dar"],
 		["../view/jack.html",		 	"jack"],
-		["../view/colorTest.html",		"colors"]
+		["../view/colorTest.html",		"colors"],
+		["../view/dateFormat.html",		"date f"]
 	];
 
 	var buildAnchor = function(href, txt){
