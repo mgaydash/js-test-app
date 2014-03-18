@@ -27,11 +27,13 @@ var menubuilder = function(){
 	var buildAnchor = function(href, txt){
 		var anchor = $("<a>");
 		var span = $("<span>").css({
-			"background-color": "white",
-			"border": "2px solid black",
-			"color": "black",
+			"background-color": "purple",
+			// "border": "2px solid black",
+			"color": "white",
 			"display": "inline-block",
+			"height": "25px",
 			"margin": "5px 5px 0px 0px",
+			"padding": "5px 0px 0px 0px",
 			"text-align": "center",
 			"width": "100px"
 		}).html(
