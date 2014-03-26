@@ -15,7 +15,6 @@ var server = http.createServer(function(req, res){
 });
 
 routes.GET["/"] = function(req, res){
-	console.log(req.pUrl.href);
 	if(req.pUrl.href === "/"){
 		req.pUrl.href = "/view/testbed.html";
 	}
