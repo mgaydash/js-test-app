@@ -21,7 +21,8 @@ var menubuilder = function(){
 		["../view/2dar.html",		 	"2dar"],
 		["../view/jack.html",		 	"jack"],
 		["../view/colorTest.html",		"colors"],
-		["../view/dateFormat.html",		"date f"]
+		["../view/dateFormat.html",		"date f"],
+		["../view/responsive.html",		"responsive"]
 	];
 
 	var buildAnchor = function(href, txt){
