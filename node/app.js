@@ -15,6 +15,10 @@ var server = http.createServer(function(req, res){
 });
 
 routes.GET["/"] = function(req, res){
+	console.log(req.pUrl.href);
+	if(req.pUrl.href === "/"){
+		req.pUrl.href = "/view/testbed.html";
+	}
 	fs.readFile(".." + req.pUrl.href, function(err, html){
 		res.writeHeader(200, {"Content-Type": "text/html"});
 		res.write(html);
