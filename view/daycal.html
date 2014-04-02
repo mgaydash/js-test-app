@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+		<script src="../js/menubuilder.js" type="text/javascript"></script>
+		<title>
+			day cal
+		</title>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				menubuilder();
+				$(".resizeMeJs").width($(window).width() - 102);
+				$(window).on("resize", function(){
+					$(".resizeMeJs").width($(window).width() - 102);
+				});
+
+				var row = $(".df_dayCalendar_hourRow").remove();
+				for(var i = 0; i < 24; i++){
+					$(".df_dayCalendar_content").append(row.clone());
+				}
+			});
+		</script>
+		<style>
+			*, *:before, *:after {
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="border:2px solid black;">
+			<div class="df_dayCalendar_title" style="border-bottom:2px solid black; text-align:center;">Sunday March 23 2014</div>
+			<div class="df_dayCalendar_content" style="height:600px; overflow-y:scroll; position:relative;">
+				<div class="df_dayCalendar_drawPanel" style="position:absolute;"></div>
+				<div class="df_dayCalendar_dropPanel" style="left:0px; position:absolute; top:0px; z-index:1001">
+					<div class="df_dayCalendar_dropPanelRow" style="height:17px;"></div>
+				</div>
+				<div class="df_dayCalendar_hourRow" style="height:68px;">
+					<div class="df_dayCalendar_hourCell" style="background-color:#ccccff; border-bottom:1px solid black; float:left; height:100%; width:65px;">12:00 AM</div>
+					<div class="resizeMeJs" style="border-bottom:1px solid #cccccc; border-left:1px solid black; float:left; height:100%"></div>
+					<div style="clear:both;"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

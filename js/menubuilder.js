@@ -22,7 +22,10 @@ var menubuilder = function(){
 		["../view/jack.html",		 	"jack"],
 		["../view/colorTest.html",		"colors"],
 		["../view/dateFormat.html",		"date f"],
-		["../view/responsive.html",		"responsive"]
+		["../view/responsive.html",		"responsive"],
+		["../view/weekcal.html",		"week cal"],
+		["../view/daycal.html",			"day cal"],
+		["../view/monthcal.html",		"month cal"]
 	];
 
 	var buildAnchor = function(href, txt){
