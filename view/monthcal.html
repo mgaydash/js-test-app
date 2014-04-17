@@ -7,20 +7,40 @@
 		<script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
 		<script src="../js/menubuilder.js" type="text/javascript"></script>
 		<title>
-			day cal
+			month cal
 		</title>
 		<script type="text/javascript">
 			jQuery(document).ready(function(){
 				menubuilder();
-				$(".resizeMeJs").width($(window).width() - 102);
-				$(window).on("resize", function(){
-					$(".resizeMeJs").width($(window).width() - 102);
-				});
 
-				var row = $(".df_dayCalendar_hourRow").remove();
-				for(var i = 0; i < 24; i++){
-					$(".df_dayCalendar_content").append(row.clone());
+				var holder = $(".df_weekCalendar_resize");
+				var bar = $(".df_weekCalendar_column").detach();
+				var cells = [];
+				for(var i = 0; i < 399; i++){
+					var cell = bar.clone();
+					cell.html(i);
+					cells.push(cell);
+					holder.append(cell);
 				}
+				holder.append($("<div style='clear:both;'></div>"))
+
+				cells[0].css("background-color", "blue");
+				cells[1].css("background-color", "blue");
+				cells[2].css("background-color", "blue");
+
+				cells[7].css("background-color", "green");
+				cells[8].css("background-color", "green");
+
+				cells[14].css("background-color", "purple");
+
+				cells[42].css("background-color", "orange");
+				cells[43].css("background-color", "orange");
+				cells[44].css("background-color", "orange");
+				cells[45].css("background-color", "orange");
+				cells[46].css("background-color", "orange");
+				cells[47].css("background-color", "orange");
+				cells[48].css("background-color", "orange");
+				cells[84].css("background-color", "orange");
 			});
 		</script>
 		<style>
@@ -29,23 +49,25 @@
 				-webkit-box-sizing: border-box;
 				box-sizing: border-box;
 			}
+
+			.df_weekCalendar_column{
+				border-bottom:1px solid black;
+				border-left:1px solid black;
+				float:left;
+				height:16px;
+				width:14.28%;
+			}
+
+			.df_weekCalendar_resize{
+				border:2px solid black;
+				border-bottom:1px solid black;
+				border-left:1px solid black;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="df_weekCalendar unselectable">
-			<div style="border:2px solid black;">
-				<div class="df_weekCalendar_title" style="border-bottom:2px solid black; text-align:center;">April 2014</div>
-				<div style="border-bottom:2px solid black; ">
-					<div style="float:left; height:10px; width:65px;"></div>
-					<div class="df_weekCalendar_resize" style="border-right:1px solid black; float:left;">
-						<div class="df_weekCalendar_column df_weekCalendar_column_head df_weekCalendar_titleCell_dowDate"></div>
-						<div style="clear:both;"></div>
-					</div>
-					<div style="clear:both;"></div>
-				</div>
-				<div class="df_weekCalendar_content" style="overflow-y:scroll; position:relative;">
-				</div>
-			</div>
+		<div class="df_weekCalendar_resize">
+			<div class="df_weekCalendar_column"></div>
 		</div>
 	</body>
 </html>
