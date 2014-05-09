@@ -19,8 +19,10 @@ routes.GET["/"] = function(req, res){
 		req.pUrl.href = "/view/testbed.html";
 	}
 	fs.readFile(".." + req.pUrl.href, function(err, html){
-		res.writeHeader(200, {"Content-Type": "text/html"});
-		res.write(html);
+		if(html){
+			res.writeHeader(200, {"Content-Type": "text/html"});
+			res.write(html);
+		}
 		res.end();
 	});
 };
