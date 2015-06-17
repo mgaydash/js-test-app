@@ -21,6 +21,16 @@
 				for(var i = 0; i < 24; i++){
 					$(".df_dayCalendar_content").append(row.clone());
 				}
+
+				var option = $("<option>");
+				option.val(100);
+				option.html("one-hundred");
+				$("#testSelect").append(option).change(function(){
+					var obj = {};
+					obj.html = "test";
+					obj.val = $(this).val();
+					console.log(obj);
+				});
 			});
 		</script>
 		<style>
@@ -46,5 +56,9 @@
 				</div>
 			</div>
 		</div>
+
+		<select id="testSelect">
+			<option value-"">-- --</option>
+		</select>
 	</body>
 </html>

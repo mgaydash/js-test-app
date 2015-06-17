@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var iframe = document.getElementById("iframe");
+				window.setInterval(function(){
+					var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+					$(innerDoc).find(".button").click();
+				},
+				100)
+			});
+		</script>
+	</head>
+	<body>
+		<iframe height="400" id="iframe" src="http://progresswars.com/" width="600"></iframe>
+	</body>
+</html>

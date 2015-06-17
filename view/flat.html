@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/menubuilder.js" type="text/javascript"></script>
+		<script src="../js/pubsub.js" type="text/javascript"></script>
+		<link href="../css/test.css" rel="stylesheet" type="text/css" />
+		<title>
+			flat
+		</title>
+		<script>
+			jQuery(document).ready(function(){
+				menubuilder();
+				var menu = MobileMenu();
+				menu.addButton("test", function(){alert("test");});
+				menu.addSpace(100);
+				menu.addButton("test2", function(){
+					menu.showFullScreen();
+				});
+			});
+		</script>
+		<style>
+			* {
+				box-sizing:border-box;
+				-moz-box-sizing:border-box; /* Firefox */
+			}
+
+			.button {
+				color:#ffffff;
+				cursor:pointer;
+				float:left;
+				font-family:Arial, "sans-serif";
+				height:110px;
+				margin:0px 0px 0px 5px;
+				padding-top:30px;
+				padding-left:46px;
+				width:150px;
+			}
+			.button:first-child{
+				margin:0px 0px 0px 0px;
+			}
+			.button:hover {
+				border:3px solid white;
+				padding-top:27px;
+				padding-left:43px;
+			}
+
+			.buttonrow {
+				margin:5px 0px 0px 0px;
+			}
+			.buttonrow:first-child{
+				margin:0px 0px 0px 0px;
+			}
+
+			.buttontext {
+				margin-top:3px;
+				margin-left:-35px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="buttonrow">
+			<div class="button button_contacts" style="background-color:#339966;">
+				<img src="../images/flat/contacts.png">
+				<div class="buttontext">Contacts</div>
+			</div>
+			<div class="button button_corr" style="background-color:#669999;">
+				<img src="../images/flat/correspondence.png">
+				<div class="buttontext">Correspondence</div>
+			</div>
+			<div class="button" style="background-color:#ff9933;">
+				<img src="../images/flat/library.png">
+				<div class="buttontext">Library</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="buttonrow">
+			<div class="button" style="background-color:#FFDB4D;">
+				<img src="../images/flat/reports.png">
+				<div class="buttontext">Reports</div>
+			</div>
+			<div class="button" style="background-color:#6600cc;">
+				<img src="../images/flat/companies.png">
+				<div class="buttontext">Companies</div>
+			</div>
+			<div class="button" style="background-color:#0000cc;">
+				<img src="../images/flat/buildings.png">
+				<div class="buttontext">Buildings</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="buttonrow">
+			<div class="button" style="background-color:#996633;">
+				<img src="../images/flat/projects.png">
+				<div class="buttontext">Projects</div>
+			</div>
+			<div class="button" style="background-color:#999966;">
+				<img src="../images/flat/workorders.png">
+				<div class="buttontext">Work Orders</div>
+			</div>
+			<div class="button" style="background-color:#d0d0d0;">
+				<img src="../images/flat/events.png">
+				<div class="buttontext">Events</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="buttonrow">
+			<div class="button" style="background-color:#cc0000;">
+				<img src="../images/flat/warranties.png">
+				<div class="buttontext">Warranties</div>
+			</div>
+			<div class="button" style="background-color:#cc0066;">
+				<img src="../images/flat/ar.png">
+				<div class="buttontext">AR</div>
+			</div>
+			<div class="button" style="background-color:#888888;">
+				<img src="../images/flat/usercal.png">
+				<div class="buttontext">User Calendar</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+	</body>
+</html>

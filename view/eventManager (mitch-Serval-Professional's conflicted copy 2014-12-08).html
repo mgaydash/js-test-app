@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/menubuilder.js" type="text/javascript"></script>
+		<title>
+			event manager
+		</title>
+		<script>
+			/*var Globals = {};
+			(function() {
+				var elem;
+				document.onmousemove = handleMouseMove;
+				function handleMouseMove(event) {
+					var eventDoc, doc, body, pageX, pageY;
+					event = event || window.event;
+
+					if(event.target != elem){
+						console.log("leave");
+						console.log(elem);
+						console.log("enter");
+						console.log(event.target);
+						elem = event.target;
+					}
+
+					if (event.pageX == null && event.clientX != null) { //Stolen from jQuery for old IE compatibility. Hopefully this won't have to run.
+						eventDoc = (event.target && event.target.ownerDocument) || document;
+						doc = eventDoc.documentElement;
+						body = eventDoc.body;
+						event.pageX = event.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || body && body.clientLeft || 0);
+						event.pageY = event.clientY + (doc && doc.scrollTop  || body && body.scrollTop  || 0) - (doc && doc.clientTop  || body && body.clientTop  || 0 );
+					}
+					Globals.mouseX = event.pageX;
+					Globals.mouseY = event.pageY;
+				}
+			})();*/
+
+
+			jQuery(document).ready(function(){
+				menubuilder();
+
+				var EventManager = {};
+				(function(that){
+					var doc = $(document);
+					var eventMap = {};
+					var registeredSels = [];
+
+					var elem;
+					document.onmousemove = function (event) {
+						event = event || window.event;
+
+						if(elem && event.target != elem){
+							elem = $(elem);
+							executeCallback(elem, "mouseleave");
+
+							elem = $(event.target);
+							executeCallback(elem, "mouseenter");
+
+						}
+						elem = event.target;
+					};
+
+					that.register = function(selector, event, callback){
+						if(!eventMap.hasOwnProperty(event)){
+							eventMap[event] = {};
+
+							doc.on(event, function(e){
+								var elem = $(e.target);
+								executeCallback(elem, event);
+							});
+						}
+						if(!eventMap[event].hasOwnProperty(selector)){
+							eventMap[event][selector] = []	
+						}
+						eventMap[event][selector].push(callback);
+					};
+
+					var executeCallback = function(elem, event){
+						var eventFound = false;
+						// var elem = $(e.target);
+						while(elem && elem[0].parentElement && !eventFound){
+							var selAr = [];
+							var index;
+							var index2;
+
+							if(elem.attr("id")){
+								selAr.push("#" + elem.attr("id"));
+							}
+							if(elem.attr("class")){
+								var classAr = elem.attr("class").split(/\s+/);
+								for(index in classAr){
+									selAr.push("." + classAr[index]);
+								}
+							}
+							for(index in selAr){
+								if(eventMap[event][selAr[index]]){
+									for(index2 in eventMap[event][selAr[index]]){
+										eventMap[event][selAr[index]][index2](elem);
+									}
+									eventFound = true;
+									break;
+								}
+							}
+							elem = elem.parent();
+						}
+					};
+
+					var getSelectorAr = function(elem){
+						var selAr = [];
+						if(elem.attr("id")){
+							selAr.push("#" + elem.attr("id"));
+						}
+						if(elem.attr("class")){
+							var classAr = elem.attr("class").split(/\s+/);
+							for(index in classAr){
+								selAr.push("." + classAr[index]);
+							}
+						}
+						return selAr;
+					};
+				}(EventManager));
+				
+				// EventManager.register(".black", "click", function(e){console.log(e)});
+				// EventManager.register(".red", "click", function(e){
+				// 	e.css("background-color","rgb(" + Math.floor(Math.random() * 256) + ", "+ Math.floor(Math.random() * 256) + ", "+ Math.floor(Math.random() * 256) + ")");
+				// });
+				// EventManager.register(".red", "click", function(e){console.log(e)});
+
+				EventManager.register(".red", "mouseenter", function(e){console.log(e)});
+
+				// EventManager.register(".sel", "mousedown", function(e){console.log(e)});
+				// EventManager.register(".sel", "change", function(e){alert($(e).val())});
+			});
+		</script>
+		<style>
+		</style>
+	</head>
+	<body>
+		<div class="black" style="background-color:#000000; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div class="red" style="background-color:#ff0000; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div class="red" style="background-color:#ff0000; float:left; height:140px; margin:5px; width:140px;"></div>
+		<select class="sel">
+			<option>test</option>
+			<option>test2</option>
+		</select>
+	</body>
+</html>

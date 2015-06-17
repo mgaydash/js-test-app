@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<title>evtmgr2</title>
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var EventManager = {};
+			(function(that){
+				// # # # # # # Public Methods # # # # # # \\
+				that.registerEventHandler = function(selector, event, callback){
+					if(!map.hasOwnProperty(event)){
+						map[event] = {};
+						$(document).on(event, function(e){
+							execCallbacks(e.target, event);
+						});
+					}
+					if(!map[event].hasOwnProperty(selector)){
+						map[event][selector] = [];
+					}
+					map[event][selector].push(callback);
+					console.debug(map);
+				};
+
+				that.setEventBinder = function(event, binder){
+					binders[event] = binder;
+				};
+
+				// # # # # # # Private Methods # # # # # # \\
+				var execCallbacks = function(elem, event){
+					var ar = getSelectorAr(elem);
+					if(map[event]){ //If a event is associated with the given event
+						for(var i in ar){ //Loop through selectors on element
+							for(var j in map[event][ar[i]]){ //Loop each handlers associated with the selector associated with the event
+								map[event][ar[i]][j](elem);
+							}
+						}
+					}
+				};
+
+				var getSelectorAr = function(elem){
+					var ar = elem.className ? elem.className.split(" ") : [];
+					for(var i in ar){
+						ar[i] = "." + ar[i];
+					}
+					if(elem.id){
+						ar.push("#" + elem.id);
+					}
+					return ar;
+				};
+
+				// # # # # # # Constructor # # # # # # \\
+				var map = {};
+				var binders = {};
+				var elem;
+				document.onmousemove = function(event) {
+					var eventDoc
+					var doc;
+					var body;
+					event = event || window.event;
+					if (event.pageX == null && event.clientX != null) { //Stolen from jQuery for old IE compatibility. Hopefully this won't have to run.
+						eventDoc = (event.target && event.target.ownerDocument) || document;
+						doc = eventDoc.documentElement;
+						body = eventDoc.body;
+						event.pageX = event.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || body && body.clientLeft || 0);
+						event.pageY = event.clientY + (doc && doc.scrollTop  || body && body.scrollTop  || 0) - (doc && doc.clientTop  || body && body.clientTop  || 0 );
+					}
+					that.mouseX = event.pageX;
+					that.mouseY = event.pageY;
+
+					//Implementing top-level mouseenter/mouseleave detection
+					if(event.target != elem){
+						if(elem){
+							execCallbacks(elem, "mouseleave");
+							execCallbacks(event.target, "mouseenter");
+						}
+						elem = event.target;
+					}
+				}
+			})(EventManager);
+
+			EventManager.registerEventHandler(".red", "click", function(){alert("clicked!");});
+			EventManager.registerEventHandler(".red", "click", function(){alert("clicked!!!!!!!!!");});
+			EventManager.registerEventHandler(".rectangle", "click", function(){alert("clicked again!");});
+			EventManager.registerEventHandler("#id2", "click", function(e){alert(e.id);});
+
+			EventManager.registerEventHandler("#id2", "mouseenter", function(e){console.log("enter " + e.id);});
+			EventManager.registerEventHandler("#id2", "mouseleave", function(e){console.log("leave " + e.id);});
+		</script>
+		<style type="text/css">
+			.red{
+				background-color:red;
+				float:left;
+				height:200px;
+				margin:10px;
+				width:100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="red rectangle"></div>
+		<div class="red" id="eyedee"></div>
+		<div id="id2" style="background-color:blue; float:left; height:200px; margin:10px; width:100px;"></div>
+		<div style="background-color:blue; float:left; height:200px; margin:10px; width:100px;"></div>
+	</body>
+</html>

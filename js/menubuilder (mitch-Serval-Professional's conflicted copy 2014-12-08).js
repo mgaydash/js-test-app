@@ -31,7 +31,7 @@ var menubuilder = function(){
 		["../view/rightclick.html",		"rc"],
 		["../view/weekDayCal.html",		"weekDayCal"],
 		["../view/mobilemenu.html",		"mobile"],
-		["../view/evtCal.html",		"evtcal"]
+		["../view/flat.html",		"flat"]
 	];
 
 	var buildAnchor = function(href, txt){

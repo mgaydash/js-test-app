@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../js/menubuilder.js" type="text/javascript"></script>
+		<title>
+			right click
+		</title>
+		<script>
+			jQuery(document).ready(function(){
+				menubuilder();
+
+				var RightClick = {};
+				(function(that){
+					that.register = function(selector, callback){
+						menuMap[selector] = callback;
+					};
+
+					var bindeventhandlers = function(){
+						document.oncontextmenu = function(){return false;};
+
+						doc.on("mouseup.right_click_menu", function(e){
+							if(e.button === 2){ //if right click
+								menu.css({
+									"left": ((e.pageX + menu.width() < doc.width()) ? (e.pageX + 3) : (e.pageX - menu.width() - 3)) + "px",
+									"top": ((e.pageY + menu.height() < doc.height()) ? e.pageY + 3 : (e.pageY - menu.height() - 3)) + "px"
+								});
+
+								var menuMapFound = false;
+								var x = $(e.target);
+								while(x && x[0].parentElement && !menuMapFound){
+									var selAr = [];
+									var index;
+
+									if(x.attr("id")){
+										selAr.push("#" + x.attr("id"));
+									}
+									if(x.attr("class")){
+										var classAr = x.attr("class").split(/\s+/);
+										for(index in classAr){
+											selAr.push("." + classAr[index]);
+										}
+									}
+									for(index in selAr){
+										if(menuMap[selAr[index]]){
+											show(menuMap[selAr[index]], x);
+											menuMapFound = true;
+											break;
+										}
+									}
+
+									x = x.parent();
+								}
+								if(!menuMapFound){
+									menu.detach();
+								}
+							}
+							else{
+								menu.detach();
+							}
+						});
+					};
+
+					var show = function(menuMap, e){
+						menu.html("");
+						for(var key in menuMap){
+							menu.append(function(){
+								var div = $("<div class='df_rightClick_entry'>");
+								div.html(key);
+								div.mouseup((function(func){
+									return function(){
+										func(e);
+										menu.detach();
+									};
+								})(menuMap[key]));
+								return div;
+							});
+						}
+						body.append(menu);
+					};
+
+					var menu = $("<div class='df_rightClick'>");
+
+					var doc = $(document);
+					var body = $("body");
+					var menuMap = {};
+
+					bindeventhandlers();
+				})(RightClick);
+
+				RightClick.register(".black", {
+					Edit : function(e){
+						console.log("edit");
+					},
+					"Random Color": function(e){
+						e.css("background-color","rgb(" + Math.floor(Math.random() * 256) + ", "+ Math.floor(Math.random() * 256) + ", "+ Math.floor(Math.random() * 256) + ")");
+					},
+					DELETE: function(e){
+						console.log("delete");
+						console.log(e);
+						e.remove();
+					}
+				});
+
+				$(".ab").click(function(){
+					$("body").append($('<div class="black" style="background-color:#000000; float:left; height:140px; margin:5px; width:140px;"></div>'));
+				});
+
+				$(".clickity").click(function(){
+					$(".clickity").append('<div style="background-color:#333333; float:left; height:25px; margin:5px; width:600px;"></div>');
+				});
+			});
+		</script>
+		<style>
+			.df_rightClick{
+				background-color:#ffffff;
+				border: 1px solid black;
+				font-family:sans-serif;
+				position: fixed
+			}
+			.df_rightClick_entry{
+				border-bottom:1px solid black;
+				cursor:pointer;
+				padding:2px 15px 0px 5px;
+			}
+			.df_rightClick_entry:hover{
+				background-color:#eeeeee;
+			}
+			.df_rightClick_entry:last-child{
+				border-bottom:none;
+			}
+		</style>
+	</head>
+	<body class="body">
+		<table border="1" class="black" style="background-color:#dddddd; height:90%; left:5%; position:fixed; table-layout:fixed; top:5%; width:90%;">
+			<tr style="height:50px;">
+				<td>its the header</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="clickity" style="height:100%; overflow-y:scroll"></div>
+				</td>
+			</tr>
+			<tr style="height:50px;">
+				<td>can you believe it? its a footer</td>
+			</tr>
+		</table>
+
+		<div style="width:100%;">
+			<button class="ab" style="margin-left:100px;">Add Black</button>
+		</div>
+		<div style="background-color:red; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div class="orange" style="background-color:orange; float:left; height:140px; margin:5px; width:140px;">
+			<div class="square black" id="tinyBlackSquare" style="background-color:black; height:50px; width:50px;"></div>
+		</div>
+		<div style="background-color:yellow; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:green; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:blue; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div class="purple" style="background-color:purple; float:left; height:140px; margin:5px; width:140px;"></div>
+
+		<div class="black" style="background-color:#000000; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:#333333; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:#666666; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:#999999; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:#cccccc; float:left; height:140px; margin:5px; width:140px;"></div>
+		<div style="background-color:#f0f0f0; float:left; height:140px; margin:5px; width:140px;"></div>
+	</body>
+</html>
