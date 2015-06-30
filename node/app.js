@@ -5,7 +5,7 @@ var fs = require("fs");
 var routes = {
 	GET: {},
 	POST: {}
-}
+};
 
 var server = http.createServer(function(req, res){
 	var pUrl = url.parse(req.url, true);
@@ -35,5 +35,7 @@ routes.GET["/ajaxTest"] = function(req, res){
 	res.end();
 };
 
-server.listen(3000);
-console.log('listening on port 3000');
+var port = 3000;
+
+server.listen( port );
+console.log( 'listening on port ' + port );
