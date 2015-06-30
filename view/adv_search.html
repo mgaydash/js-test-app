@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+        <script src="../js/menubuilder.js" type="text/javascript"></script>
+        <script src="//localhost:35729/livereload.js"></script>
+        <title>
+            adv cal search
+        </title>
+        <script type="text/javascript">
+            jQuery( document ).ready( function() {
+                menubuilder();
+
+                $( ".control_btn_min" ).click( function() {
+                    $( this ).parent().find( ".control_btn_max" ).show();
+                    $( this ).hide();
+                    $( this ).parent().parent().parent().find( ".search_row_body" ).css( "visibility", "hidden" );
+                    $( this ).parent().parent().parent().find( ".search_row_body" ).hide( 200 );
+                } );
+
+                $( ".control_btn_max" ).click( function() {
+                    $( this ).parent().find( ".control_btn_min" ).show();
+                    $( this ).hide();
+                    $( this ).parent().parent().parent().find( ".search_row_body" ).show( 200, function() {
+                        $( this ).parent().parent().parent().find( ".search_row_body" ).css( "visibility", "visible" );
+                    } );
+                } );
+
+                $( ".search_row_enablecb" ).change( function() {
+                    if ( this.checked ) {
+                        $( this ).parent().parent().find( ".search_row_body_modal" ).hide();
+                    } else {
+                        $( this ).parent().parent().find( ".search_row_body_modal" ).show();
+                    }
+                } );
+            } );
+        </script>
+        <style>
+            #search_main {
+                border: 1px solid black;
+                font-family: Arial, Sans-serif;
+                width:100%;
+            }
+
+            #search_main_head {
+                margin-left: 6px;
+                margin-top: 5px;
+                font-size: 20px;
+            }
+
+            .control_btn_holder {
+                cursor: pointer;
+                position: absolute;
+                right:18px;
+                top:4px;
+            }
+
+            .control_btn_max {
+                border: 1px solid #000000;
+                display: none;
+                height: 11px;
+                position: absolute;
+                width: 10px;
+            }
+
+            .control_btn_min {
+                border-bottom: 1px solid #000000;
+                height: 12px;
+                position: absolute;
+                width: 11px;
+            }
+
+            .search_row {
+                border: 1px solid #000000;
+                margin:5px;
+            }
+
+            .search_row_body {
+                border-top: 1px solid #000000;
+                position: relative;
+            }
+
+            .search_row_body_modal {
+                background-color: rgba( 100, 100, 100, .25);
+                display: none;
+                height: 100%;
+                left: 0px;
+                position: absolute;
+                top: 0px;
+                width: 100%;
+            }
+
+            .search_row_enablecb {
+                margin-left: 5px;
+                position: relative;
+                top:-2px;
+            }
+
+            .search_row_head {
+                height: 18px;
+                padding-top: 2px;
+                position: relative;
+            }
+
+            .search_row_select {
+                width:100px;
+            }
+
+            .search_row_select_holder {
+                float: left;
+                margin: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="search_main">
+            <div id="search_main_head">Search</div>
+            <div class="search_row">
+                <div class="search_row_head">
+                    <input checked class="search_row_enablecb" type="checkbox">
+                    <span>Work Order Work Dates</span>
+                    <div class="control_btn_holder">
+                        <div class="control_btn_max"></div>
+                        <div class="control_btn_min"></div>
+                    </div>
+                </div>
+                <div class="search_row_body">
+                    <div class="search_row_body_modal"></div>
+                    <div class="search_row_select_holder">
+                        <div>Type</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Subtype</div>
+                        <div>
+                            <select disabled multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                     <div class="search_row_select_holder">
+                        <div>Region</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                     <div class="search_row_select_holder">
+                        <div>Foreman</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Division</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Department</div>
+                        <div>
+                            <select disabled multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Location</div>
+                        <div>
+                            <select disabled multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Status</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Lock</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+
+                </div>
+            </div>
+
+            <div class="search_row">
+                <div class="search_row_head">
+                    <input checked class="search_row_enablecb" type="checkbox">
+                    <span>Project Work Dates</span>
+                    <div class="control_btn_holder">
+                        <div class="control_btn_max"></div>
+                        <div class="control_btn_min"></div>
+                    </div>
+                </div>
+                <div class="search_row_body">
+                    <div class="search_row_body_modal"></div>
+                    <div class="search_row_select_holder">
+                        <div>Lock</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+
+            <div class="search_row">
+                <div class="search_row_head">
+                    <input checked class="search_row_enablecb" type="checkbox">
+                    <span>Work Order Bids</span>
+                    <div class="control_btn_holder">
+                        <div class="control_btn_max"></div>
+                        <div class="control_btn_min"></div>
+                    </div>
+                </div>
+                <div class="search_row_body">
+                    <div class="search_row_body_modal"></div>
+                    <div class="search_row_select_holder">
+                        <div>Lock</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+
+            <div class="search_row">
+                <div class="search_row_head">
+                    <input checked class="search_row_enablecb" type="checkbox">
+                    <span>Project Bids</span>
+                    <div class="control_btn_holder">
+                        <div class="control_btn_max"></div>
+                        <div class="control_btn_min"></div>
+                    </div>
+                </div>
+                <div class="search_row_body">
+                    <div class="search_row_body_modal"></div>
+                    <div class="search_row_select_holder">
+                        <div>Lock</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+
+            <div class="search_row">
+                <div class="search_row_head">
+                    <input checked class="search_row_enablecb" type="checkbox">
+                    <span>Events</span>
+                    <div class="control_btn_holder">
+                        <div class="control_btn_max"></div>
+                        <div class="control_btn_min"></div>
+                    </div>
+                </div>
+                <div class="search_row_body">
+                    <div class="search_row_body_modal"></div>
+                    <div class="search_row_select_holder">
+                        <div>User</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Type</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Subtype</div>
+                        <div>
+                            <select disabled multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search_row_select_holder">
+                        <div>Lock</div>
+                        <div>
+                            <select multiple class="search_row_select">
+                                <option value="0">Zero</option>
+                                <option value="0">One</option>
+                                <option value="0">Two</option>
+                                <option value="0">Three</option>
+                                <option value="0">Four</option>
+                                <option value="0">Five</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
