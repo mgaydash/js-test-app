@@ -1,42 +1,43 @@
-var menubuilder = function(){
+var menubuilder = function() {
 	var entries = [
-		["../view/testbed.html",		"testbed"],
-		["../view/test2.html",		 	"test2"],
-		["../view/search.html",		 	"search"],
-		["../view/quickfind.html",		"quickfind"],
-		["../view/iemax.html",		 	"iemax"],
-		["../view/pi.html",		 		"pi"],
-		["../view/paint.html",		 	"paint"],
-		["../view/textFade.html",		"gradient"],
-		["../view/cal.html",		 	"cal"],
-		["../view/fizzbuzz.html",		"fizzbuzz"],
-		["../view/fiddle.html",		 	"fiddle"],
-		["../view/calSearch.html",		"cal bar"],
-		["../view/boxSize.html",		"b sizing"],
-		["../view/2way.html",		 	"2WBind"],
-		["../view/console.html",		"console"],
-		["../view/woCal.html",		 	"woCal"],
-		["../view/cal2.html",		 	"cal2"],
-		["../view/cal3.html",		 	"cal3"],
-		["../view/2dar.html",		 	"2dar"],
-		["../view/jack.html",		 	"jack"],
-		["../view/colorTest.html",		"colors"],
-		["../view/dateFormat.html",		"date f"],
-		["../view/responsive.html",		"responsive"],
-		["../view/weekcal.html",		"week cal"],
-		["../view/daycal.html",			"day cal"],
-		["../view/monthcal.html",		"month cal"],
-		["../view/modal.html",		"modal"],
-		["../view/shag.html",		"shag"],
-		["../view/rightclick.html",		"rc"],
-		["../view/weekDayCal.html",		"weekDayCal"],
-		["../view/mobilemenu.html",		"mobile"],
-		["../view/evtCal.html",		"evtcal"]
+		[ "../view/testbed.html", "testbed" ],
+		[ "../view/test2.html", "test2" ],
+		[ "../view/search.html", "search" ],
+		[ "../view/quickfind.html", "quickfind" ],
+		[ "../view/iemax.html", "iemax" ],
+		[ "../view/pi.html", "pi" ],
+		[ "../view/paint.html", "paint" ],
+		[ "../view/textFade.html", "gradient" ],
+		[ "../view/cal.html", "cal" ],
+		[ "../view/fizzbuzz.html", "fizzbuzz" ],
+		[ "../view/fiddle.html", "fiddle" ],
+		[ "../view/calSearch.html", "cal bar" ],
+		[ "../view/boxSize.html", "b sizing" ],
+		[ "../view/2way.html", "2WBind" ],
+		[ "../view/console.html", "console" ],
+		[ "../view/woCal.html", "woCal" ],
+		[ "../view/cal2.html", "cal2" ],
+		[ "../view/cal3.html", "cal3" ],
+		[ "../view/2dar.html", "2dar" ],
+		[ "../view/jack.html", "jack" ],
+		[ "../view/colorTest.html", "colors" ],
+		[ "../view/dateFormat.html", "date f" ],
+		[ "../view/responsive.html", "responsive" ],
+		[ "../view/weekcal.html", "week cal" ],
+		[ "../view/daycal.html", "day cal" ],
+		[ "../view/monthcal.html", "month cal" ],
+		[ "../view/modal.html", "modal" ],
+		[ "../view/shag.html", "shag" ],
+		[ "../view/rightclick.html", "rc" ],
+		[ "../view/weekDayCal.html", "weekDayCal" ],
+		[ "../view/mobilemenu.html", "mobile" ],
+		[ "../view/evtCal.html", "evtcal" ],
+		[ "../view/adv_search.html", "advsrch" ]
 	];
 
-	var buildAnchor = function(href, txt){
-		var anchor = $("<a>");
-		var span = $("<span>").css({
+	var buildAnchor = function( href, txt ) {
+		var anchor = $( "<a>" );
+		var span = $( "<span>" ).css( {
 			"background-color": "purple",
 			// "border": "2px solid black",
 			"color": "white",
@@ -46,15 +47,15 @@ var menubuilder = function(){
 			"padding": "5px 0px 0px 0px",
 			"text-align": "center",
 			"width": "100px"
-		}).html(
+		} ).html(
 			txt
 		);
-		anchor.attr("href", href).html(span);
+		anchor.attr( "href", href ).html( span );
 		return anchor;
 	}
 
-	var spring = $("<div>");
-	spring.css({
+	var spring = $( "<div>" );
+	spring.css( {
 		"color": "white",
 		"cursor": "pointer",
 		"font-family": "Arial, sans-serif",
@@ -66,21 +67,25 @@ var menubuilder = function(){
 		"top": "0px",
 		"width": "70px",
 		"z-index": "1000"
-	}).hover(
-		function(){
-			$(this).css({"background-color": "purple"});
-			$(this).html("M");
+	} ).hover(
+		function() {
+			$( this ).css( {
+				"background-color": "purple"
+			} );
+			$( this ).html( "M" );
 		},
-		function(){
-			$(this).css({"background-color": ""});	
-			$(this).html("");
+		function() {
+			$( this ).css( {
+				"background-color": ""
+			} );
+			$( this ).html( "" );
 		}
-	).click(function(){
+	).click( function() {
 		menu.show();
-	});
-	$("body").append(spring);
+	} );
+	$( "body" ).append( spring );
 
-	var menu = $("<div>").css({
+	var menu = $( "<div>" ).css( {
 		"background-color": "white",
 		"border-bottom": "2px solid black",
 		"display": "none",
@@ -91,11 +96,11 @@ var menubuilder = function(){
 		"top": "0px",
 		"width": "100%",
 		"z-index": "1000"
-	}).mouseleave(function(){
-		$(this).hide();
-	});
-	for(var i = 0; i < entries.length; i++){
-		menu.append(buildAnchor(entries[i][0], entries[i][1]));
+	} ).mouseleave( function() {
+		$( this ).hide();
+	} );
+	for ( var i = 0; i < entries.length; i++ ) {
+		menu.append( buildAnchor( entries[ i ][ 0 ], entries[ i ][ 1 ] ) );
 	}
-	$("body").append(menu);
+	$( "body" ).append( menu );
 };
