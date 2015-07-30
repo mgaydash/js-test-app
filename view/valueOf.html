@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+        <script src="../js/jquery.ui.position.js" type="text/javascript"></script>
+        <script src="../js/jquery.contextMenu.js" type="text/javascript"></script>
+        <script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+        <script src="../js/menubuilder.js" type="text/javascript"></script>
+        <link href="../css/contextMenu/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+        <link href="../css/jQUi/jquery-ui-1.8.21.custom.css" rel="stylesheet" type="text/css" />
+        <link href="../css/test.css" rel="stylesheet" type="text/css" />
+        <title>
+            2D Ar
+        </title>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){;
+                menubuilder();
+
+                var Test = function () {
+                    this.valueOf = function () {
+                        return 77;
+                    }; 
+
+                    this.toString = function () {
+                        return "test str";
+                    };
+                };
+
+                var test = new Test();
+
+                console.log( "String: " + test );
+                console.log( 3 + test );
+            });
+        </script>
+    </head>
+    <body>
+        <img src="../images/spinner.gif" style="margin-left:auto; margin-right:auto;">
+    </body>
+</html>
