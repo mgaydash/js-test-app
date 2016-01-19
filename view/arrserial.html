@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="../bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+        <script src="../js/menubuilder.js" type="text/javascript"></script>
+        <script src="//localhost:35729/livereload.js"></script>
+        <title>
+            day cal
+        </title>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                menubuilder();
+
+                // Array is submitted to server serialized without indices
+                // ar[]:t
+                // ar[]:e
+                // ar[]:s
+                // ...
+                var o = {};
+                o.ar = [ "t", "e", "s", "t", "s", "t", "r", "i", "n", "g" ];
+                ajaxCall( o );
+
+                // Will turning the array into a key-value object work?
+                var p = {};
+                p.ar = [ "t", "e", "s", "t", "s", "t", "r", "i", "n", "g" ];
+                p.ar = objectifyAr( p.ar );
+                ajaxCall( p );
+
+                ajaxCall( [ "t", "e", "s", "t", "s", "t", "r", "i", "n", "g" ] );
+
+            });
+
+            var ajaxCall = function ( data ) {
+                $.ajax( {
+                    data: data,
+                    url: "http://localhost:3000/ajaxTest"
+                } );
+            };
+
+            var objectifyAr = function ( ar ) {
+                var i,
+                    o = {};
+                for ( i = 0; i < ar.length; i++ ) {
+                    o[ i ] = ar[ i ];
+                }
+                return o;
+            };
+        </script>
+        <style>
+        </style>
+    </head>
+    <body>
+    </body>
+</html>

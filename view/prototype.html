@@ -19,6 +19,8 @@
             });
 
             var Base = {
+                count: 0,
+
                 inc: function () {
                     this.count++;
                 },
@@ -32,18 +34,48 @@
                 }
             };
 
-            var Ex = function () {
-                this.count = 0;
+            var Ex1 = Object.create( Base );
+            Ex1.add = function ( num ) {
+                var i;
+                for ( i = 0; i < num; i++ ) {
+                    this.inc();
+                }
             };
 
-            Ex.prototype = Base;
+            /*var Ex2 = Object.create( Base );
+            Ex2.add = function ( num ) {
+                var i;
+                for ( i = 0; i < num * 2; i++ ) {
+                    this.inc();
+                }
+            };*/
 
-            var ex = new Ex();
-            console.log( ex );
-            ex.inc();
-            ex.inc();
-            ex.inc();
-            console.log( ex.getCount() );
+            var Ex2 = function () {
+                this.add = function ( num ) {
+                    var i;
+                    for ( i = 0; i < num * 2; i++ ) {
+                        this.inc();
+                    }    
+                };
+            };
+            Ex2.prototype = Base;
+
+            var o1 = Object.create( Ex1 );
+            // var o2 = Object.create( Ex2 );
+            var o2 = new Ex2();
+
+            o1.add( 5 );
+            console.log( o1.getCount() );
+
+            o2.add( 5 );
+            console.log( o2.getCount() );
+
+            console.log( o1.getCount() );
+
+            String.prototype.repeatify = function ( n ) {
+                return this.repeat( n );
+            }
+            console.log( "t".repeatify( 2 ) );
         </script>
         <style type="text/css">
 

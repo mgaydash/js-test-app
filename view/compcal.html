@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="../js/jquery-1.7.2.min.js" type="text/javascript"></script>
+        <script src="../js/jquery-ui-1.8.21.custom.min.js" type="text/javascript"></script>
+        <script src="../js/menubuilder.js" type="text/javascript"></script>
+        <script src="//localhost:35729/livereload.js"></script>
+        <title>
+            comp cal
+        </title>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                menubuilder();
+                var compcal = new CalendarComp( ".compcal" );
+            });
+
+            var CalendarComp = function ( selector ) {
+                var bindeventhandlers = function () {
+
+                };
+
+                var buildrows = function ( date ) {
+                    date = date || new Date();
+                };
+
+                bindeventhandlers();
+            };
+        </script>
+        <style>
+            .floatleft {
+                float: left;
+            }
+
+            .clearboth {
+                clear: both;
+            }
+
+            /* */
+
+            .compcal {
+                border: 1px solid #cccccc;
+                font-size: 14px;
+                font-family: arial;
+                height: 900px;
+                overflow-y: scroll;
+                width: 900px;
+            }
+
+            .compcal_row_draw {
+                border-bottom: 1px solid #cccccc;
+                height: 64px;
+                width: 836px;
+            }
+
+            .compcal_row_time {
+                height: 64px;
+                width: 64px;
+            }
+
+            .compcal_row_time_text {
+                position: relative;
+                top: -9px;
+            }
+
+            .compcal_scroller {
+                height: 100000px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="compcal">
+            <div class="compcal_scroller">
+                <div class="compcal_row">
+                    <div class="compcal_row_time floatleft">
+                        <div class="compcal_row_time_text">12:00 AM</div>
+                    </div>
+                    <div class="compcal_row_draw floatleft"></div>
+                    <div class="clearboth"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
