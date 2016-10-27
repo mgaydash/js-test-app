@@ -1,6 +1,6 @@
-module.exports = function(grunt) {
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+module.exports = function ( grunt ) {
+    grunt.initConfig( {
+        pkg: grunt.file.readJSON( 'package.json' ),
         watch: {
             files: [
                 "js/**/*.js",
@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                 livereload: true
             }
         }
-    });
+    } );
 
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks( 'grunt-contrib-watch' );
 };
