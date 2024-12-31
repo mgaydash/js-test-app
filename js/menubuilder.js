@@ -96,7 +96,7 @@ var menubuilder = function() {
 		"top": "0px",
 		"width": "100%",
 		"z-index": "1000"
-	} ).mouseleave( function() {
+	} ).click( function() {
 		$( this ).hide();
 	} );
 	for ( var i = 0; i < entries.length; i++ ) {
